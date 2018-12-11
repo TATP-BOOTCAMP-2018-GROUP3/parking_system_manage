@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input} from 'antd';
+import { Table, Divider, Button, Input, Popconfirm } from 'antd';
 
 const Search = Input.Search;
 
@@ -14,8 +14,8 @@ const columns = [{
   key: 'accountName',
 }, {
   title: 'Phone Number',
-  dataIndex: 'phoneNumb',
-  key: 'phoneNumb',
+  dataIndex: 'phoneNum',
+  key: 'phoneNum',
 }, {
   title: 'Status',
   dataIndex: 'parking_status',
@@ -27,43 +27,55 @@ const columns = [{
     <span>
       <a href="javascript:;">Edit</a>
       <Divider type="vertical" />
-      <a href="javascript:;">Delete</a>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {
+        const data = this.state.data
+        this.setState({
+          data: data.filter(item => item.key !== record.key)
+        })
+      }}>
+        <a href="javascript:;">Delete</a>
+      </Popconfirm>
     </span>
   ),
 }];
+
+
 
 export default class ParkingBoyManagementPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        data: []
+      data: []
     };
-}
+  }
 
-  render(){ 
-
+  componentDidMount() {
     fetch("https://parking-system-backend.herokuapp.com/parkingclerks", { method: 'GET', mode: 'cors' })
-    .then(res => res.json())
-    .then(res => {
-      this.setState({data: res})
-    });
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ data: res })
+      });
+  
+  }
 
-    return ( 
-    <div>
-      <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
-        Add Employee
+  render() {
+
+    return (
+      <div>
+        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+          Add Employee
       </Button>
-      <span>
-        <div>
-          <Search
-            placeholder="input search text"
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
-        </div>
-      </span>
-    <Table columns={columns} dataSource={this.state.data} />
-    </div>
+        <span>
+          <div>
+            <Search
+              placeholder="input search text"
+              onSearch={value => console.log(value)}
+              style={{ width: 200 }}
+            />
+          </div>
+        </span>
+        <Table columns={columns} dataSource={this.state.data} />
+      </div>
     )
   }
 }
