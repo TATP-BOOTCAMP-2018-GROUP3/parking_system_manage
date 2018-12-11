@@ -8,6 +8,7 @@ cache:
     - node_modules
 
 script:
+  - unset CI 
   - npm run build
 
 deploy:
