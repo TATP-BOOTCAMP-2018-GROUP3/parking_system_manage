@@ -1,6 +1,15 @@
-import { combineReducers } from 'redux'
-import EmployeeReducer from './EmployeeReducer'
-
-export default combineReducers({
-    //EmployeeReducer
-})
+const initialState = {
+    parkingLots: []
+  };
+  
+export default (state = initialState, { type, payload }) => {
+    switch (type) {
+        case "REFRES_ALL_PARKING_LOTS":
+            return {
+                ...state,
+                parkingLots: payload
+            }
+        default:
+            return state;
+    }
+};

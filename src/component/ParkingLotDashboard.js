@@ -8,11 +8,10 @@ export default class ParkingLotDashboard extends Component {
     }
 
     componentDidMount() {
-        fetch('https://parking-system-backend.herokuapp.com/parkinglots')
+        DashboardResource.getAll()
+        .then(result => result.json())
         .then(result => {
-            return result.json();
-        })
-        .then(result => {
+            console.log(result)
             this.setState({ results: result })
         })      
       }
