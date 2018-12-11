@@ -10,16 +10,16 @@ const columns = [{
   render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
+  dataIndex: 'accountName',
+  key: 'accountName',
 }, {
   title: 'Phone Number',
   dataIndex: 'phoneNumb',
   key: 'phoneNumb',
 }, {
   title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
+  dataIndex: 'parking_status',
+  key: 'parking_status',
 }, {
   title: 'Action',
   key: 'action',
@@ -32,33 +32,22 @@ const columns = [{
   ),
 }];
 
-const data = [{
-  key: '1',
-  id: "1",
-  name: 'John Brown',
-  phoneNumb: "11111111",
-  status:'working'
- 
-}, {
-  key: '2',
-  id: '2',
-  name: 'Jim Green',
-  phoneNumb: "22222222",
-  status:'off'
-
-}, {
-  key: '3',
-  id: '3',
-  name: 'Joe Black',
-  phoneNumb: "3333333",
-  status:'working'
-}];
-
-
- 
-
 export default class ParkingBoyManagementPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        data: []
+    };
+}
+
   render(){ 
+
+    fetch("https://parking-system-backend.herokuapp.com/parkingclerks", { method: 'GET', mode: 'cors' })
+    .then(res => res.json())
+    .then(res => {
+      this.setState({data: res})
+    });
+
     return ( 
     <div>
       <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
@@ -73,7 +62,7 @@ export default class ParkingBoyManagementPage extends Component {
           />
         </div>
       </span>
-    <Table columns={columns} dataSource={data} />
+    <Table columns={columns} dataSource={this.state.data} />
     </div>
     )
   }
