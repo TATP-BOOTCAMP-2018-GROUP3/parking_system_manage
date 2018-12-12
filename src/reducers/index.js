@@ -1,7 +1,9 @@
 const initialState = {
     parkingLots: [],
-    onShowForm: false
-  };
+    onShowForm: false,
+    parkingOrders: [],
+    parkingClerks: [],
+};
   
 export default (state = initialState, { type, payload }) => {
     switch (type) {
@@ -14,6 +16,16 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 onShowForm: !state.onShowForm
+                }
+        case "GET_ALL_PARKING_ORDER":
+            return {
+                ...state,
+                parkingOrders: payload
+            }
+        case "REFRESH_ALL_PARKING_CLERKS":
+            return {
+                ...state,
+                parkingClerks: payload
             }
         default:
             return state;
