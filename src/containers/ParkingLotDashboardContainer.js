@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     refeshAllParkingLots: parkingLots => {
         dispatch({
-            type: "REFRES_ALL_PARKING_LOTS",
+            type: "REFRESH_ALL_PARKING_LOTS",
             payload: parkingLots
         });
     }

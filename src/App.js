@@ -4,9 +4,9 @@ import { Layout, Menu, Icon } from 'antd';
 import { Route, Link, Switch } from "react-router-dom"
 import EmployeeManagementPage from "./component/EmployeeManagementPage"
 import ParkingLotManagementPage from "./component/ParkingLotManagementPage"
-import ParkingBoyManagementPage from "./component/ParkingBoyManagementPage"
 import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
+import ParkingBoyManagementContainer from './containers/ParkingBoyManagementContainer';
 const { Header, Sider, Content } = Layout;
 
 class App extends Component {
@@ -80,7 +80,7 @@ class App extends Component {
             <Switch>
               <Route path="/EmployeeManagementPage" component={EmployeeManagementPage}></Route>
               <Route path="/ParkingLotManagementPage" component={ParkingLotManagementPage}></Route>
-              <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementPage}></Route>
+              <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
               <Route path="/OrderManagement" component={OrderManagement}></Route>
             </Switch>

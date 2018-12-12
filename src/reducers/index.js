@@ -1,11 +1,12 @@
 const initialState = {
     parkingLots: [],
-    parkingOrders: []
-  };
+    parkingOrders: [],
+    parkingClerks: [],
+};
   
 export default (state = initialState, { type, payload }) => {
     switch (type) {
-        case "REFRES_ALL_PARKING_LOTS":
+        case "REFRESH_ALL_PARKING_LOTS":
             return {
                 ...state,
                 parkingLots: payload
@@ -14,7 +15,12 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 parkingOrders: payload
-            }    
+            }
+        case "REFRESH_ALL_PARKING_CLERKS":
+            return {
+                ...state,
+                parkingClerks: payload
+            }
         default:
             return state;
     }

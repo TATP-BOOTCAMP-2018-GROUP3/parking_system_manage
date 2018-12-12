@@ -6,42 +6,43 @@ import {Transfer} from 'antd';
 
 const Search = Input.Search;
 
-const columns = [{
-  title: 'Id',
-  dataIndex: 'id',
-  key: 'id',
-  render: text => <a href="javascript:;">{text}</a>,
-}, {
-  title: 'Name',
-  dataIndex: 'accountName',
-  key: 'accountName',
-}, {
-  title: 'Phone Number',
-  dataIndex: 'phoneNum',
-  key: 'phoneNum',
-}, {
-  title: 'Status',
-  dataIndex: 'parking_status',
-  key: 'parking_status',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="javascript:;">Edit</a>
-      <Divider type="vertical" />
-      <Popconfirm title="Sure to delete?" onConfirm={() => {
-        const data = this.state.data
-        this.setState({
-          data: data.filter(item => item.key !== record.key)
-        })
-      }}>
-        <a onClick={() => {
-                            this.generateTransfer(record)
-                          }}>Delete</a>
-      </Popconfirm>
-    </span>
-  ),
+const columns = 
+  [{
+    title: 'Id',
+    dataIndex: 'id',
+    key: 'id',
+    render: text => <a href="javascript:;">{text}</a>,
+  }, {
+    title: 'Name',
+    dataIndex: 'accountName',
+    key: 'accountName',
+  }, {
+    title: 'Phone Number',
+    dataIndex: 'phoneNum',
+    key: 'phoneNum',
+  }, {
+    title: 'Status',
+    dataIndex: 'parking_status',
+    key: 'parking_status',
+  }, {
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => (
+      <span>
+        <a href="javascript:;">Edit</a>
+        <Divider type="vertical" />
+        <Popconfirm title="Sure to delete?" onConfirm={() => {
+          const data = this.state.data
+          this.setState({
+            data: data.filter(item => item.key !== record.key)
+          })
+        }}>
+          <a onClick={() => {
+                              this.generateTransfer(record)
+                            }}>Delete</a>
+        </Popconfirm>
+      </span>
+    ),
 }];
 
 
@@ -50,10 +51,7 @@ export default class ParkingBoyManagementPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parkingClerks: [],
-      parkingLots: [],
-      parkinglotData: [],
-      targetKeys: []
+      targetKeysOfParkingLots: []
     };
   }
 
@@ -61,69 +59,70 @@ export default class ParkingBoyManagementPage extends Component {
     ParkingClerksResource.getAll()
       .then(res => res.json())
       .then(res => {
-        this.setState({ ...this.state, parkingClerks: res })
+        this.props.refreshAllParkingClerks(res);
       }); 
     ParkingLotsResource.getAll()
-    .then(res => res.json())
-    .then(res => {
-      this.setState({ ...this.state, parkingLots: res })
-    })
+      .then(res => res.json())
+      .then(res => {
+        this.props.refeshAllParkingLots(res);
+      })
   }
 
-  handleChange = (nextTargetKeys, direction, moveKeys, id) => {
+  handleChange = (nextTargetKeys, direction, moveKeys, employeeId) => {
     if (direction == 'right'){
       moveKeys.forEach(key => {
-        let updatedParkingLot = this.state.parkingLots.find(lot => lot.id === key);
-        ParkingLotsResource.assignClerk(updatedParkingLot, this.state.editingEmployeeId)
-        .then(res => res.json())
+        let updatedParkingLot = this.props.parkingLots.find(lot => lot.id === key);
+        ParkingLotsResource.assignClerk(updatedParkingLot, employeeId)
         .then(res => {
-          ParkingClerksResource.getAll()
+          this.setState({targetKeysOfParkingLots: nextTargetKeys});
+          ParkingLotsResource.getAll()
             .then(res => res.json())
             .then(res => {
-              this.setState({ ...this.state, parkingClerks: res, targetKeys: nextTargetKeys})
-            }); 
+              this.props.refeshAllParkingLots(res);
+            })
         })
       });
     } else {
       moveKeys.forEach(key => {
-        let updatedParkingLot = this.state.parkingLots.find(lot => lot.id === key);
+        let updatedParkingLot = this.props.parkingLots.find(lot => lot.id === key);
         ParkingLotsResource.unassignClerk({...updatedParkingLot, employeeId: null})
-        .then(res => res.json())
         .then(res => {
-          ParkingClerksResource.getAll()
+          this.setState({targetKeysOfParkingLots: nextTargetKeys});
+          ParkingLotsResource.getAll()
             .then(res => res.json())
             .then(res => {
-              this.setState({ ...this.state, parkingClerks: res, targetKeys: nextTargetKeys})
-            }); 
+              this.props.refeshAllParkingLots(res);
+            })
         })
       });
     }
   }
 
   generateTransfer = (employee) => {
-    this.state.editingEmployeeId = employee.id;
-
-    this.state.ownedParkinglotData = this.state.parkingLots
-                          .filter(lot=>((lot.employeeId === null) || lot.employeeId == employee.id))
-                          .map(lot=> ({title: lot.parkingLotName, key: lot.id, description:'test', employeeId: lot.employeeId}));
-
-    this.state.targetKeys = this.state.ownedParkinglotData
+    let editingEmployeeId = employee.id;
+    let usableParkinglotData = this.props.parkingLots
+                              .filter(lot=>((lot.employeeId === null) || lot.employeeId == employee.id))
+                              .map(lot=> ({title: lot.parkingLotName, key: lot.id, description:'test', employeeId: lot.employeeId}));
+    let targetKeysOfParkingLots = usableParkinglotData
                       .filter(lot => (lot.employeeId == employee.id))
                       .map(lot=>lot.key);
 
+    this.state.targetKeysOfParkingLots = targetKeysOfParkingLots;
+
     return (
-        <Transfer
-          style={{display:"flex",justifyContent:"center"}}
-          dataSource={this.state.ownedParkinglotData}
-          listStyle={{
-              width: 250,
-              height: 300,
-            }}
-          filterOption={this.filterOption}
-          targetKeys={this.state.targetKeys}
-          render={item => item.title}
-          onChange={(nextTargetKeys, direction, moveKeys)=>this.handleChange(nextTargetKeys, direction, moveKeys, employee.id)}
-        />)
+      <Transfer
+        style={{display:"flex",justifyContent:"center"}}
+        dataSource={usableParkinglotData}
+        listStyle={{
+            width: 250,
+            height: 300,
+          }}
+        showSearch
+        filterOption={this.filterOption}
+        targetKeys={this.state.targetKeysOfParkingLots}
+        render={item => item.title}
+        onChange={(nextTargetKeys, direction, moveKeys)=>this.handleChange(nextTargetKeys, direction, moveKeys, editingEmployeeId)}
+      />)
   }
   
 
@@ -139,7 +138,7 @@ export default class ParkingBoyManagementPage extends Component {
             />
           </div>
         </span>
-        <Table columns={columns} expandedRowRender={this.generateTransfer} dataSource={this.state.parkingClerks} />
+        <Table columns={columns} expandedRowRender={this.generateTransfer} dataSource={this.props.parkingClerks} />
       </div>
     )
   }
