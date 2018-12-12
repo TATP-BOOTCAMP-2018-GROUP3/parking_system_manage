@@ -48,34 +48,53 @@ const columns = [
 ];
 
 export default class ParkingLotManagementPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      parkingLots: this.props.parkingLots
+    }
+  }
 
   componentDidMount() {
     ParkingLotsResource.getAll()
-    .then(result => result.json())
-    .then(result => {
-      this.props.refeshAllParkingLots(result);
-    })
+      .then(result => result.json())
+      .then(result => {
+        this.props.refeshAllParkingLots(result);
+      })
   }
 
   createParkingLot = (name, capacity) => {
     return (ParkingLotsResource.addLot(name, capacity))
   }
-    
-    render() {
-      return (
-        <div>
-          { this.props.onShowForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} /> : null }
-          
-          <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
-            Add Parking Lot
+
+  render() {
+    return (
+      <div>
+        {this.props.onShowForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} /> : null}
+
+        <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
+          Add Parking Lot
           </Button>
-          <Search
-              placeholder="Search parking lot"
-              onSearch={value => console.log(value)}
-              style={{ width: 200 }}
-            />
-          <Table columns={columns} dataSource={this.props.parkingLots}/>
-        </div>
-      )
-    }
+        <Search
+          placeholder="Search parking lot"
+          onSearch={
+            (value) => {
+              if (value === "") {
+                this.setState({ parkingLots: this.props.parkingLots })
+              } else {
+                this.setState({
+                  parkingLots: this.props.parkingLots.filter((lot) => {
+                    return (lot.parkingLotName.indexOf(value) != -1)
+                  })
+                })
+              }
+
+            }
+          }
+          style={{ width: 200 }}
+        />
+        <Table columns={columns} dataSource={this.state.parkingLots} />
+      </div>
+    )
+  }
 }
