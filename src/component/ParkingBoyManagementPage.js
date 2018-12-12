@@ -9,36 +9,20 @@ const columns = [{
   dataIndex: 'id',
   key: 'id',
   render: text => <a href="javascript:;">{text}</a>,
-}, {
-  title: 'Name',
-  dataIndex: 'accountName',
-  key: 'accountName',
-}, {
-  title: 'Phone Number',
-  dataIndex: 'phoneNum',
-  key: 'phoneNum',
-}, {
-  title: 'Status',
-  dataIndex: 'parking_status',
-  key: 'parking_status',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="javascript:;">Edit</a>
-      <Divider type="vertical" />
-      <Popconfirm title="Sure to delete?" onConfirm={() => {
-        const data = this.state.data
-        this.setState({
-          data: data.filter(item => item.key !== record.key)
-        })
-      }}>
-        <a href="javascript:;">Delete</a>
-      </Popconfirm>
-    </span>
-  ),
-}];
+  }, {
+    title: 'Name',
+    dataIndex: 'accountName',
+    key: 'accountName',
+  }, {
+    title: 'Phone Number',
+    dataIndex: 'phoneNum',
+    key: 'phoneNum',
+  }, {
+    title: 'Status',
+    dataIndex: 'parking_status',
+    key: 'parking_status',
+  }
+];
 
 
 
@@ -62,9 +46,6 @@ export default class ParkingBoyManagementPage extends Component {
 
     return (
       <div>
-        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
-          Add Employee
-      </Button>
         <span>
           <div>
             <Search
