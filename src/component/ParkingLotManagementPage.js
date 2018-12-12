@@ -79,16 +79,11 @@ export default class ParkingLotManagementPage extends Component {
           placeholder="Search parking lot"
           onSearch={
             (value) => {
-              if (value === "") {
-                this.setState({ parkingLots: this.props.parkingLots })
-              } else {
-                this.setState({
-                  parkingLots: this.props.parkingLots.filter((lot) => {
-                    return (lot.parkingLotName.indexOf(value) != -1)
-                  })
+              this.setState({
+                parkingLots: this.props.parkingLots.filter((lot) => {
+                  return (lot.parkingLotName.indexOf(value) != -1)
                 })
-              }
-
+              })
             }
           }
           style={{ width: 200 }}
