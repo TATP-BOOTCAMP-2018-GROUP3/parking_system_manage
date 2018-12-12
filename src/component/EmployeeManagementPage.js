@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Divider, Button, Input} from 'antd';
+import EmployeeResource from '../resources/EmployeeResource';
+import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 
 const Search = Input.Search;
 
@@ -18,8 +20,8 @@ const columns = [{
   key: 'email',
 }, {
   title: 'Phone Number',
-  dataIndex: 'phoneNumb',
-  key: 'phoneNumb',
+  dataIndex: 'phoneNum',
+  key: 'phoneNum',
 }, {
   title: 'Action',
   key: 'action',
@@ -31,37 +33,27 @@ const columns = [{
     </span>
   ),
 }];
-
-const data = [{
-  key: '1',
-  id: "1",
-  name: 'John Brown',
-  email: 'testemail1@gamil.com',
-  phoneNumb: "11111111",
- 
-}, {
-  key: '2',
-  id: '2',
-  name: 'Jim Green',
-  email: 'testemail2@gamil.com',
-  phoneNumb: "22222222",
-
-}, {
-  key: '3',
-  id: '3',
-  name: 'Joe Black',
-  email: 'testemail3@gamil.com',
-  phoneNumb: "3333333",
-}];
-
-
  
 
 export default class EmployeeManagementPage extends Component {
+
+  componentDidMount() {
+    EmployeeResource.getAll()
+    .then(result => result.json())
+    .then(result => {
+      this.props.refeshAllEmployees(result);
+    })
+  }
+
+  createEmployee = (accountName, email, phoneNumb) => {
+    return (EmployeeResource.addEmployee(accountName, email, phoneNumb))
+  }
+
   render(){ 
     return ( 
     <div>
-      <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+      { this.props.onShowForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} /> : null }      
+      <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
         Add Employee
       </Button>
       <span>
@@ -73,7 +65,7 @@ export default class EmployeeManagementPage extends Component {
           />
         </div>
       </span>
-    <Table columns={columns} dataSource={data} />
+    <Table columns={columns} dataSource={this.props.employees} />
     </div>
     )
   }

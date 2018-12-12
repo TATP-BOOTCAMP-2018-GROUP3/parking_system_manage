@@ -1,5 +1,6 @@
 const initialState = {
     parkingLots: [],
+    employees: [],
     onShowForm: false
   };
   
@@ -14,6 +15,11 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 onShowForm: !state.onShowForm
+            }
+        case "REFRESH_ALL_EMPLOYEES":
+            return {
+                ...state,
+                employees: payload
             }
         default:
             return state;

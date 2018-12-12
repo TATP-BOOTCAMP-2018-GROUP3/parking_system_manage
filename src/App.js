@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Layout, Menu, Icon } from 'antd';
 import { Route, Link, Switch } from "react-router-dom"
-import EmployeeManagementPage from "./component/EmployeeManagementPage"
+import EmployeeManagementContainer from "./containers/EmployeeManagementContainer"
 import ParkingBoyManagementPage from "./component/ParkingBoyManagementPage"
 import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
@@ -78,7 +78,7 @@ class App extends Component {
           }}
           >
             <Switch>
-              <Route path="/EmployeeManagementPage" component={EmployeeManagementPage}></Route>
+              <Route path="/EmployeeManagementPage" component={EmployeeManagementContainer}></Route>
               <Route path="/ParkingLotManagementPage" component={ParkingLotManagementContainer}></Route>
               <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementPage}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
