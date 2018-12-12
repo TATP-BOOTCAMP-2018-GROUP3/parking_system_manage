@@ -10,12 +10,12 @@ const columns = [{
   render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: 'Car Number',
-  dataIndex: 'carNumber',
-  key: 'carNumber',
+  dataIndex: 'carId',
+  key: 'carId',
 }, {
   title: 'Parking/Fetching',
-  dataIndex: 'ParkOrFetch',
-  key: 'ParkOrFetch',
+  dataIndex: 'parkOrFetch',
+  key: 'parkOrFetch',
 }, {
   title: 'Status',
   dataIndex: 'status',
@@ -26,36 +26,68 @@ const columns = [{
   key: 'operation',
 }];
 
-const data = [{
-  key: '1',
-  id: "1",
-  carNumber: '1',
-  ParkOrFetch: 'Park',
-  status: '',
-  Operation: ''
-
-}, {
-  key: '2',
-  id: "2",
-  carNumber: '2',
-  ParkOrFetch: 'Park',
-  status: '',
-  Operation: ''
-
-}, {
-  key: '3',
-  id: "3",
-  carNumber: '3',
-  ParkOrFetch: 'Fetch',
-  status: '',
-  Operation: ''
-
-}];
-
-
-
-
 export default class OrderManagementPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+  }
+
+  componentDidMount() {
+
+    const hostname = "https://parking-system-backend.herokuapp.com";
+
+    let resourceName = "/parkingorders";
+    fetch(hostname + resourceName,
+      {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers({
+          'Authorization': 'Bearer ' + localStorage.getItem('AUTH')
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        let fetchedParkResult = res.map((element) => {
+          return {
+            id: element.id,
+            carId: element.carId,
+            parkOrFetch: 'Park',
+            status: element.status
+          }
+        })
+
+
+        let resourceName2 = "/returnorders";
+        fetch(hostname + resourceName2,
+          {
+            method: 'GET',
+            mode: 'cors',
+            headers: new Headers({
+              'Authorization': 'Bearer ' + localStorage.getItem('AUTH')
+            })
+          })
+          .then(res => res.json())
+          .then(res => {
+            console.log(res)
+            let fetchedReturnResult = res.map((element) => {
+              return {
+                id: element.id,
+                carId: element.carId,
+                parkOrFetch: 'Fetch',
+                status: element.status
+              }
+            })
+
+            this.setState({ data: fetchedParkResult.concat(fetchedReturnResult) })
+
+          });
+
+      });
+
+  }
+
   render() {
     return (
       <div>
@@ -68,7 +100,7 @@ export default class OrderManagementPage extends Component {
             />
           </div>
         </span>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={this.state.data} />
       </div>
     )
   }
