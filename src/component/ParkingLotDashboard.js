@@ -30,8 +30,8 @@ export default class ParkingLotDashboard extends Component {
                                     <Col span={12}>
                                         <Progress
                                             type="dashboard"
-                                            format={() => `${item.capacity - item.availablePositionCount}/${item.capacity}`}
-                                            percent={((item.capacity - item.availablePositionCount) / item.capacity) * 100} />
+                                            format={() => `${item.availablePositionCount}/${item.capacity}`}
+                                            percent={(( item.availablePositionCount) / item.capacity) * 100} />
                                     </Col>
                                     <Col span={12}>
                                         ParkingBoy：{item.employee_id}
