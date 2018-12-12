@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input} from 'antd';
+import { Table, Divider, Button, Input } from 'antd';
 
 const Search = Input.Search;
 
@@ -33,7 +33,7 @@ const data = [{
   ParkOrFetch: 'Park',
   status: '',
   Operation: ''
- 
+
 }, {
   key: '2',
   id: "2",
@@ -53,23 +53,23 @@ const data = [{
 }];
 
 
- 
+
 
 export default class OrderManagementPage extends Component {
-  render(){ 
-    return ( 
-    <div>
-      <span>
-        <div>
-          <Search
-            placeholder="input search text"
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
-        </div>
-      </span>
-    <Table columns={columns} dataSource={data} />
-    </div>
+  render() {
+    return (
+      <div>
+        <span>
+          <div>
+            <Search
+              placeholder="input search text"
+              onSearch={value => console.log(value)}
+              style={{ width: 200 }}
+            />
+          </div>
+        </span>
+        <Table columns={columns} dataSource={data} />
+      </div>
     )
   }
 }
