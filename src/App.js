@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Layout, Menu, Icon } from 'antd';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom"
+import { Route, Link, Switch } from "react-router-dom"
 import EmployeeManagementPage from "./component/EmployeeManagementPage"
 import ParkingLotManagementPage from "./component/ParkingLotManagementPage"
 import ParkingBoyManagementPage from "./component/ParkingBoyManagementPage"
@@ -10,6 +10,14 @@ import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContai
 const { Header, Sider, Content } = Layout;
 
 class App extends Component {
+
+  componentWillMount(){
+    if (localStorage.getItem('AUTH') === null && localStorage.getItem('ROLE') === null) {
+      this.props.history.push('/login');
+      return;
+    }
+  }
+
   state = {
     collapsed: false,
   };
@@ -19,6 +27,7 @@ class App extends Component {
       collapsed: !this.state.collapsed,
     });
   }
+
   render() {
     return (
       <Layout id="components-layout-demo-custom-trigger" style={{ minHeight: '100vh' }}>
@@ -69,12 +78,11 @@ class App extends Component {
           }}
           >
             <Switch>
-            <Route path="/EmployeeManagementPage" component={EmployeeManagementPage}></Route>
-            <Route path="/ParkingLotManagementPage" component={ParkingLotManagementPage}></Route>
-            <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementPage}></Route>
-            <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
-            <Route path="/OrderManagement" component={OrderManagement}></Route>
-
+              <Route path="/EmployeeManagementPage" component={EmployeeManagementPage}></Route>
+              <Route path="/ParkingLotManagementPage" component={ParkingLotManagementPage}></Route>
+              <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementPage}></Route>
+              <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
+              <Route path="/OrderManagement" component={OrderManagement}></Route>
             </Switch>
 
           </Content>

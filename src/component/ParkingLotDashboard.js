@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Col, Row, Progress } from 'antd';
-import DashboardResource from '../resources/DashboardResource';
+import ParkingLotsResource from '../resources/ParkingLotsResource';
 export default class ParkingLotDashboard extends Component {
     constructor(props) {
         super(props);
@@ -8,7 +8,7 @@ export default class ParkingLotDashboard extends Component {
     }
 
     componentDidMount() {
-        DashboardResource.getAll()
+        ParkingLotsResource.getAll()
         .then(result => result.json())
         .then(result => {
             console.log(result)
