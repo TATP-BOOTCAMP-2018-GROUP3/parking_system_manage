@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Table, Divider, Button, Input, Popconfirm } from 'antd';
 import ParkingClerksResource from '../resources/ParkingClerksResource';
 import ParkingLotsResource from '../resources/ParkingLotsResource';
-import Transfers from "./Transfers";
 import {Transfer} from 'antd';
 
 const Search = Input.Search;
