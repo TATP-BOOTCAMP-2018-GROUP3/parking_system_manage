@@ -23,5 +23,15 @@ export default {
                 "capacity": capacity
             })
         }
+    ),
+    closeLot: (id) =>   fetch(hostname + resourceName + "/" + id,
+        {
+            method: 'DELETE', 
+            mode: 'cors',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('AUTH'),
+                'Content-Type': 'application/json'
+            }),
+        }
     )
 }

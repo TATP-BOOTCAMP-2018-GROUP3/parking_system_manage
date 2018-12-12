@@ -5,47 +5,6 @@ import ParkingLotFormContainer from '../containers/ParkingLotFormContainer';
 
 const Search = Input.Search;
 
-const columns = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
-    render: text => <a href="javascript:;">{text}</a>,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'parkingLotName',
-    key: 'parkingLotName',
-  },
-  {
-    title: 'Capacity',
-    dataIndex: 'capacity',
-    key: 'capacity',
-  },
-  {
-    title: 'Available Position',
-    dataIndex: 'availablePositionCount',
-    key: 'availablePositionCount',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <a href="javascript:;">Edit</a>
-        <Divider type="vertical" />
-        <Popconfirm title="Confirm to delete?" onConfirm={() => {
-          const data = this.state.data
-          this.setState({
-            data: data.filter(item => item.key !== record.key)
-          })
-        }}>
-          <a href="javascript:;">Delete</a>
-        </Popconfirm>
-      </span>
-    ),
-  }
-];
 
 export default class ParkingLotManagementPage extends Component {
   constructor(props) {
@@ -63,6 +22,57 @@ export default class ParkingLotManagementPage extends Component {
       })
   }
 
+  createColumn = () => {
+    return [
+            {
+              title: 'ID',
+              dataIndex: 'id',
+              key: 'id',
+              render: text => <a href="javascript:;">{text}</a>,
+            },
+            {
+              title: 'Name',
+              dataIndex: 'parkingLotName',
+              key: 'parkingLotName',
+            },
+            {
+              title: 'Capacity',
+              dataIndex: 'capacity',
+              key: 'capacity',
+            },
+            {
+              title: 'Available Position',
+              dataIndex: 'availablePositionCount',
+              key: 'availablePositionCount',
+            },
+            {
+              title: 'Action',
+              key: 'action',
+              render: (text, record) => (
+                <span>
+                  <a href="javascript:;">Edit</a>
+                  <Divider type="vertical" />
+                  <Popconfirm title="Confirm to close?" onConfirm={() => {
+                    ParkingLotsResource.closeLot(record.id)
+                    .then(result => {
+                      if (result.status === 200){
+                        alert("Deleted")
+                        ParkingLotsResource.getAll()
+                          .then(result => result.json())
+                          .then(result => {
+                            this.props.refeshAllParkingLots(result);
+                          })
+                      }
+                    })
+                  }}>
+                    <a href="javascript:;">Close</a>
+                  </Popconfirm>
+                </span>
+              ),
+            }
+          ];
+        }
+  
   createParkingLot = (name, capacity) => {
     return (ParkingLotsResource.addLot(name, capacity))
   }
@@ -88,7 +98,7 @@ export default class ParkingLotManagementPage extends Component {
           }
           style={{ width: 200 }}
         />
-        <Table columns={columns} dataSource={this.state.parkingLots} />
+        <Table columns={this.createColumn()} dataSource={this.state.parkingLots} />
       </div>
     )
   }
