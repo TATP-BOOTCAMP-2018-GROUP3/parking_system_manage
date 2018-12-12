@@ -12,9 +12,14 @@ script:
   - npm run build
 
 deploy:
-  provider: heroku
-  api_key: c5359a19-f5ea-4a4b-938b-283501d8bd8b
-  app: parking-system-manage
+  - provider: heroku
+    api_key: c5359a19-f5ea-4a4b-938b-283501d8bd8b
+    app: parking-system-manage
+    on:
+      branch: master
 
-on:
-  branch: master
+  - provider: heroku
+    api_key: 18cef40c-bc86-43e4-bc9b-ec3fe3dfe7dc
+    app: parking-system-manage-prod
+    on:
+      branch: production

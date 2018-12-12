@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Card, Col, Row, Progress } from 'antd';
 import ParkingLotsResource from '../resources/ParkingLotsResource';
+import ParkingClerksResource from '../resources/ParkingClerksResource';
 export default class ParkingLotDashboard extends Component {
     constructor(props) {
         super(props);
-        this.state = { results: [] }
+        this.state = { results: [], parkingClerkNameMapping: {} }
     }
 
     componentDidMount() {
@@ -12,9 +13,18 @@ export default class ParkingLotDashboard extends Component {
         .then(result => result.json())
         .then(result => {
             console.log(result)
-            this.setState({ results: result })
-        })      
-      }
+            this.setState({ ...this.state, results: result })
+        })
+        ParkingClerksResource.getAll()
+        .then(result => result.json())
+        .then(result => {
+            let map = {};
+            result.forEach(parkingClerks => {
+                map[parkingClerks.employeeId] = parkingClerks.accountName;
+            });
+            this.setState({ ...this.state, parkingClerkNameMapping: map });
+        })
+    }
 
     render() {
         
@@ -34,7 +44,7 @@ export default class ParkingLotDashboard extends Component {
                                             percent={(( item.availablePositionCount) / item.capacity) * 100} />
                                     </Col>
                                     <Col span={12}>
-                                        ParkingBoy：{item.employee_id}
+                                        ParkingBoy：{this.state.parkingClerkNameMapping[item.employeeId]}
                                     </Col>
                                 </Row>
                                 <Col span={12}><b><br />Status</b></Col>

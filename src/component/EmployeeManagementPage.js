@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input} from 'antd';
+import { Table, Divider, Button, Input, Popconfirm } from 'antd';
 import EmployeeResource from '../resources/EmployeeResource';
 import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 
@@ -12,8 +12,8 @@ const columns = [{
   render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
+  dataIndex: 'accountName',
+  key: 'accountName',
 }, {
   title: 'Email',
   dataIndex: 'email',
@@ -23,13 +23,28 @@ const columns = [{
   dataIndex: 'phoneNum',
   key: 'phoneNum',
 }, {
+  title: 'Role',
+  dataIndex: 'role',
+  key: 'role',
+}, {
+  title: 'Working Status',
+  dataIndex: 'workingStatus',
+  key: 'workingStatus',
+}, {
   title: 'Action',
   key: 'action',
   render: (text, record) => (
     <span>
       <a href="javascript:;">Edit</a>
       <Divider type="vertical" />
-      <a href="javascript:;">Delete</a>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {
+        const data = this.state.data
+        this.setState({
+          data: data.filter(item => item.key !== record.key)
+        })
+      }}>
+        <a href="javascript:;">Freeze</a>
+      </Popconfirm>
     </span>
   ),
 }];
@@ -48,25 +63,40 @@ export default class EmployeeManagementPage extends Component {
   createEmployee = (accountName, email, phoneNumb) => {
     return (EmployeeResource.addEmployee(accountName, email, phoneNumb))
   }
+    fetch(hostname + resourceName ,
+      {
+          method: 'GET', 
+          mode: 'cors',
+          headers: new Headers({
+              'Authorization': 'Bearer ' + localStorage.getItem('AUTH')
+          })
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        this.setState({ data: res })
+      });
+  }
 
-  render(){ 
-    return ( 
-    <div>
+  render() {
+
+    return (
+      <div>
       { this.props.onShowForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} /> : null }      
       <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
-        Add Employee
+          Add Employee
       </Button>
-      <span>
-        <div>
-          <Search
-            placeholder="input search text"
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
-        </div>
-      </span>
+        <span>
+          <div>
+            <Search
+              placeholder="input search text"
+              onSearch={value => console.log(value)}
+              style={{ width: 200 }}
+            />
+          </div>
+        </span>
     <Table columns={columns} dataSource={this.props.employees} />
-    </div>
+      </div>
     )
   }
 }
