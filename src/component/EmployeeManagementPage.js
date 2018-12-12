@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input, Popconfirm } from 'antd';
+import { Table, Divider, Button, Input, Popconfirm} from 'antd';
 import EmployeeResource from '../resources/EmployeeResource';
 import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 
@@ -15,21 +15,9 @@ const columns = [{
   dataIndex: 'accountName',
   key: 'accountName',
 }, {
-  title: 'Email',
-  dataIndex: 'email',
-  key: 'email',
-}, {
   title: 'Phone Number',
   dataIndex: 'phoneNum',
   key: 'phoneNum',
-}, {
-  title: 'Role',
-  dataIndex: 'role',
-  key: 'role',
-}, {
-  title: 'Working Status',
-  dataIndex: 'workingStatus',
-  key: 'workingStatus',
 }, {
   title: 'Action',
   key: 'action',
@@ -63,40 +51,25 @@ export default class EmployeeManagementPage extends Component {
   createEmployee = (accountName, email, phoneNumb) => {
     return (EmployeeResource.addEmployee(accountName, email, phoneNumb))
   }
-    fetch(hostname + resourceName ,
-      {
-          method: 'GET', 
-          mode: 'cors',
-          headers: new Headers({
-              'Authorization': 'Bearer ' + localStorage.getItem('AUTH')
-          })
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        this.setState({ data: res })
-      });
-  }
 
-  render() {
-
-    return (
-      <div>
+  render(){ 
+    return ( 
+    <div>
       { this.props.onShowForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} /> : null }      
       <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
-          Add Employee
+        Add Employee
       </Button>
-        <span>
-          <div>
-            <Search
-              placeholder="input search text"
-              onSearch={value => console.log(value)}
-              style={{ width: 200 }}
-            />
-          </div>
-        </span>
+      <span>
+        <div>
+          <Search
+            placeholder="input search text"
+            onSearch={value => console.log(value)}
+            style={{ width: 200 }}
+          />
+        </div>
+      </span>
     <Table columns={columns} dataSource={this.props.employees} />
-      </div>
+    </div>
     )
   }
 }

@@ -34,9 +34,6 @@ export default (state = initialState, { type, payload }) => {
                 ...state,
                 parkingClerks: payload
             }
-
-                ...state,
-            }
         case "REFRESH_ALL_PARKING_CLERKS":
             return {
                 ...state,

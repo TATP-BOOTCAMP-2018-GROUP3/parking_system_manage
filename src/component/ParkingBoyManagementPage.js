@@ -26,10 +26,6 @@ const columns =
     key: 'parking_status',
   }
 ];
-                              this.generateTransfer(record)
-                            }}>Delete</a>
-
-
 
 export default class ParkingBoyManagementPage extends Component {
   constructor(props) {
