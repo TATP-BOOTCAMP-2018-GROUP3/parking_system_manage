@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Table, Divider, Button, Input, Popconfirm } from 'antd';
+import ParkingClerksResource from '../resources/ParkingClerksResource';
 
 const Search = Input.Search;
 
@@ -50,12 +51,11 @@ export default class ParkingBoyManagementPage extends Component {
   }
 
   componentDidMount() {
-    fetch("https://parking-system-backend.herokuapp.com/parkingclerks", { method: 'GET', mode: 'cors' })
+    ParkingClerksResource.getAll()
       .then(res => res.json())
       .then(res => {
         this.setState({ data: res })
       });
-  
   }
 
   render() {
