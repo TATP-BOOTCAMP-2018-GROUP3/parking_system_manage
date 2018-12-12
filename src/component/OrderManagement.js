@@ -70,7 +70,6 @@ export default class OrderManagementPage extends Component {
           })
           .then(res => res.json())
           .then(res => {
-            console.log(res)
             let fetchedReturnResult = res.map((element) => {
               return {
                 id: element.id,
