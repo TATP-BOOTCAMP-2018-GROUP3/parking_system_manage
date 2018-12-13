@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input, Popconfirm, Form } from 'antd';
+import { Table, Select, Button, Input, Popconfirm, Form } from 'antd';
 import EmployeeResource from '../resources/EmployeeResource';
 import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 import EmployeePasswordModel from './EmployeePasswordModel';
 import ParkingClerksResource from '../resources/ParkingClerksResource';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Redirect } from "react-router-dom";
+import Welcome from './WelcomePage';
 
 const FormItem = Form.Item;
 const Search = Input.Search;
+const Option = Select.Option;
 
 const EditableContext = React.createContext();
 
@@ -183,7 +186,18 @@ export default class EmployeeManagementPage extends Component {
         title: 'Role',
         dataIndex: 'role',
         key: 'role',
-        editable: true,
+        render: (text, record) => {
+          return <Select 
+                  defaultValue={record.role}
+                  style={{ width: 250 }}
+                  placeholder="Select a Role"
+                  onChange={(value) => {this.changeRole(value, record)}}
+                >
+                  <Option value="CLERK">CLERK</Option>
+                  <Option value="MANAGER">MANAGER</Option>
+                  <Option value="ADMIN">ADMIN</Option>
+                </Select>
+        }
       }, {
         title: 'Status',
         dataIndex: 'workingStatus',
@@ -242,11 +256,19 @@ export default class EmployeeManagementPage extends Component {
     EmployeeResource.updateEmployee(updatedEmployee)
       .then(res => {
         this.refeshAllEmployees();
-        this.createNotification({
-          "type": "success",
-          "title": "Updated",
-          "body": "The employee " + updatedEmployee.accountName + "'s record is updated"
-        })
+        if (res.status === 400 || res.status === 500){
+          this.createNotification({
+            "type": "error",
+            "title": "Fail to Update",
+            "body": "The employee " + updatedEmployee.accountName + "'s record failed to be updated"
+          })
+        } else {
+          this.createNotification({
+            "type": "success",
+            "title": "Updated",
+            "body": "The employee " + updatedEmployee.accountName + "'s record is updated"
+          })
+        }
       })
   }
 
@@ -272,6 +294,7 @@ export default class EmployeeManagementPage extends Component {
           })
       })
   }
+
   componentDidMount() {
     EmployeeResource.getAll()
       .then(result => result.json())
@@ -313,6 +336,10 @@ export default class EmployeeManagementPage extends Component {
         searching: false
       }
     )
+  }
+
+  changeRole = (value, record) => {
+    this.handleSave({...record, role:value})
   }
 
   searchEmployee = (value) => {
@@ -362,6 +389,8 @@ export default class EmployeeManagementPage extends Component {
 
     return (
       <div>
+        {localStorage.getItem('ROLE') === "ADMIN" ? (null):( <Redirect to='/Welcome' component={Welcome}/>)}
+        
         <NotificationContainer />
 
         {this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} showPasswordModel={this.onShowPasswordModel} /> : null}
