@@ -7,6 +7,8 @@ import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
 import ParkingLotManagementContainer from './containers/ParkingLotManagementContainer';
 import AssignParkingLotContainer from './containers/AssignParkingLotContainer';
+import Welcome from './component/WelcomePage';
+
 const { Header, Sider, Content } = Layout;
 
 class App extends Component {
@@ -38,11 +40,13 @@ class App extends Component {
         >
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
+            {localStorage.getItem('ROLE') === "ADMIN" ? (
+              <Menu.Item key="1">
               <Icon type="team" />
               <span>Empolyees</span>
               <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
-            </Menu.Item>   
+              </Menu.Item>
+            ): null}  
             <Menu.Item key="2">
               <Icon type="car" />
               <span>Parking Lots</span>
@@ -83,6 +87,8 @@ class App extends Component {
               <Route path="/AssignParkingLotPage" component={AssignParkingLotContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
               <Route path="/OrderManagement" component={OrderManagement}></Route>
+              <Route path="/Welcome" component={Welcome}/>
+              <Route component={Welcome}/>
             </Switch>
 
           </Content>

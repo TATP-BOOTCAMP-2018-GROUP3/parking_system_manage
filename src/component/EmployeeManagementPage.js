@@ -5,6 +5,8 @@ import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 import EmployeePasswordModel from './EmployeePasswordModel';
 import ParkingClerksResource from '../resources/ParkingClerksResource';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Redirect } from "react-router-dom";
+import Welcome from './WelcomePage';
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -362,6 +364,8 @@ export default class EmployeeManagementPage extends Component {
 
     return (
       <div>
+        {localStorage.getItem('ROLE') === "ADMIN" ? (null):( <Redirect to='/Welcome' component={Welcome}/>)}
+        
         <NotificationContainer />
 
         {this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} showPasswordModel={this.onShowPasswordModel} /> : null}
