@@ -52,6 +52,7 @@ class ParkingLotForm extends Component {
               this.responseMessage('Parking lot already exist. Create failed.', 'error')
               }
             })
+            this.props.afterCreate()
           }
         });
     }
