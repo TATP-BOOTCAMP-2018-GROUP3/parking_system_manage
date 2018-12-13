@@ -12,7 +12,6 @@ export default class ParkingLotDashboard extends Component {
         ParkingLotsResource.getAll()
         .then(result => result.json())
         .then(result => {
-            console.log(result)
             this.setState({ ...this.state, results: result })
         })
         ParkingClerksResource.getAll()
