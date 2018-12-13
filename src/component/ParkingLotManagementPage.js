@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Popconfirm, Form } from 'antd';
+import { Table, Button, Input, Popconfirm, Form, Tag } from 'antd';
 import ParkingLotsResource from '../resources/ParkingLotsResource';
 import ParkingLotFormContainer from '../containers/ParkingLotFormContainer';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -131,6 +133,27 @@ export default class ParkingLotManagementPage extends Component {
     this.refreshAllParkingLots();
   }
 
+  createNotification = (popupMsg) => {
+    let type = popupMsg.type
+    switch (type) {
+        case 'info':
+            NotificationManager.info('Info message');
+            break;
+        case 'success':
+            NotificationManager.success(popupMsg.body, popupMsg.title);
+            break;
+        case 'warning':
+            NotificationManager.warning(popupMsg.body, popupMsg.title, 3000);
+            break;
+        case 'error':
+            NotificationManager.error(popupMsg.body, popupMsg.title, 5000, () => {
+                // alert('callback');
+            });
+            break;
+    };
+    popupMsg = null;
+}
+
   createColumn = () => {
     return [
       {
@@ -157,6 +180,14 @@ export default class ParkingLotManagementPage extends Component {
         key: 'availablePositionCount',
       },
       {
+        title: 'Current Status',
+        dataIndex: 'status',
+        key: 'status',
+        render: status => (
+          <Tag color="blue">{status}</Tag>
+        ),
+      },
+      {
         title: 'Operation',
         dataIndex: 'operation',
         render: (text, record) => {
@@ -166,24 +197,44 @@ export default class ParkingLotManagementPage extends Component {
                 ParkingLotsResource.closeLot(record.id)
                   .then(result => {
                     if (result.status === 200) {
-                      alert("Closed");
+                      this.createNotification({
+                        "type": "success",
+                        "title": "Closed",
+                        "body": "The parking lot " + record.parkingLotName + " is closed"
+                      })
                       this.refreshAllParkingLots();
+                    }else{
+                      this.createNotification({
+                        "type": "error",
+                        "title": "Error",
+                        "body": "The parking lot " + record.parkingLotName + " cannot be closed"
+                      })
                     }
                   })
               }}>
-              <a href="javascript:;">Close</a>
+              <a href="javascript:;">Close the lot</a>
             </Popconfirm>
             :
             <Popconfirm title="Confirm to open?" onConfirm={() => {
               ParkingLotsResource.openLot(record.id)
                 .then(result => {
                   if (result.status === 200) {
-                    alert("Opened");
+                    this.createNotification({
+                      "type": "success",
+                      "title": "Opened",
+                      "body": "The parking lot " + record.parkingLotName + " is opened"
+                    })
                     this.refreshAllParkingLots();
+                  }else{
+                    this.createNotification({
+                      "type": "error",
+                      "title": "error",
+                      "body": "The parking lot " + record.parkingLotName + " cannot be opened"
+                    })
                   }
                 })
             }}>
-            <a href="javascript:;">Open</a>
+            <a href="javascript:;">Open the lot</a>
           </Popconfirm>
         )},
       }
@@ -208,6 +259,11 @@ export default class ParkingLotManagementPage extends Component {
     ParkingLotsResource.updateParkingLot(updatedParkingLot)
     .then(res => {
       this.refreshAllParkingLots();
+      this.createNotification({
+        "type": "success",
+        "title": "Updated",
+        "body": "The parking lot " + updatedParkingLot.parkingLotName + "'s record is updated"
+      })
     })
   }
 
@@ -250,6 +306,8 @@ export default class ParkingLotManagementPage extends Component {
     });
     return (
       <div>
+        <NotificationContainer />
+
         {this.props.onShowParkingLotForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} afterCreate={this.resetSearch} /> : null}
 
         <Button onClick={this.props.toggleOnShowParkingLotForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
