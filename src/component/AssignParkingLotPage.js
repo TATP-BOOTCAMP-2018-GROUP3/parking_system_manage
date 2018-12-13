@@ -41,6 +41,10 @@ export default class AssignParkingLotPage extends Component {
   }
 
   componentDidMount() {
+    if (localStorage.getItem('AUTH') === null || localStorage.getItem('AUTH') === '') {
+      this.props.history.push('/login');
+      return;
+    }
     ParkingClerksResource.getAll()
       .then(res => res.json())
       .then(res => {

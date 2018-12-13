@@ -130,6 +130,10 @@ export default class ParkingLotManagementPage extends Component {
   }
 
   componentDidMount() {
+    if (localStorage.getItem('AUTH') === null || localStorage.getItem('AUTH') === '') {
+        this.props.history.push('/login');
+        return;
+    }
     this.refreshAllParkingLots();
   }
 

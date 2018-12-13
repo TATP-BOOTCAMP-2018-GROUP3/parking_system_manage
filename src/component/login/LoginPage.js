@@ -17,6 +17,15 @@ class LoginPage extends Component {
         this.state = {error: undefined}
     }
 
+    componentWillMount() {
+        if (localStorage.getItem['AUTH'] !== undefined && 
+            localStorage.getItem['ROLE'] !== 'CLERK') {
+            this.props.history.push('/ParkingLotDashboard');
+        } else {
+            localStorage.clear();
+        }
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -36,7 +45,7 @@ class LoginPage extends Component {
                     localStorage.setItem('ROLE', tokenPayload.role);
                     localStorage.setItem('ID', tokenPayload.id);
                     localStorage.setItem('USERNAME', tokenPayload.username);
-                    this.props.history.push('/');
+                    this.props.history.push('/ParkingLotDashboard');
                 })
                 .catch(error => {
                     this.setState({error: error.message})

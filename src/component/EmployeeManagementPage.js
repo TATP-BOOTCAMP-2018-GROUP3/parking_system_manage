@@ -6,7 +6,7 @@ import EmployeePasswordModel from './EmployeePasswordModel';
 import ParkingClerksResource from '../resources/ParkingClerksResource';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Redirect } from "react-router-dom";
-import Welcome from './WelcomePage';
+import ParkingLotDashboardContainer from '../containers/ParkingLotDashboardContainer';
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -274,7 +274,12 @@ export default class EmployeeManagementPage extends Component {
           })
       })
   }
+
   componentDidMount() {
+    if (localStorage.getItem('AUTH') === null || localStorage.getItem('AUTH') === '') {
+        this.props.history.push('/login');
+        return;
+    }
     EmployeeResource.getAll()
       .then(result => result.json())
       .then(result => {
@@ -364,7 +369,7 @@ export default class EmployeeManagementPage extends Component {
 
     return (
       <div>
-        {localStorage.getItem('ROLE') === "ADMIN" ? (null):( <Redirect to='/Welcome' component={Welcome}/>)}
+        {localStorage.getItem('ROLE') === "ADMIN" ? (null):( <Redirect to='/ParkingLotDashboard' component={ParkingLotDashboardContainer}/>)}
         
         <NotificationContainer />
 

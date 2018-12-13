@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Layout, Menu, Icon } from 'antd';
-import { Route, Link, Switch } from "react-router-dom"
+import { Route, Link, Switch, Redirect } from "react-router-dom"
 import EmployeeManagementContainer from "./containers/EmployeeManagementContainer"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
 import ParkingLotManagementContainer from './containers/ParkingLotManagementContainer';
 import AssignParkingLotContainer from './containers/AssignParkingLotContainer';
-import Welcome from './component/WelcomePage';
 import OrderManagementContainer from './containers/OrderManagementContainer';
+import LoginPage from './component/login/LoginPage';
+
 
 const { Header, Sider, Content } = Layout;
 
@@ -87,8 +88,7 @@ class App extends Component {
               <Route path="/AssignParkingLotPage" component={AssignParkingLotContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
               <Route path="/OrderManagement" component={OrderManagementContainer}></Route>
-              <Route path="/Welcome" component={Welcome}/>
-              <Route component={Welcome}/>
+              <Route path="/" component={ParkingLotDashboardContainer}></Route>            
             </Switch>
 
           </Content>

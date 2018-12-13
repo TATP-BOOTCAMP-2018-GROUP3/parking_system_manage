@@ -9,6 +9,10 @@ export default class ParkingLotDashboard extends Component {
     }
 
     componentDidMount() {
+        if (localStorage.getItem('AUTH') === null || localStorage.getItem('AUTH') === '') {
+            this.props.history.push('/login');
+            return;
+        }
         ParkingLotsResource.getAll()
             .then(result => result.json())
             .then(result => {

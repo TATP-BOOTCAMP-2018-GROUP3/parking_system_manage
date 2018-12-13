@@ -8,8 +8,18 @@ const Search = Input.Search;
 const Option = Select.Option;
 
 export default class OrderManagementPage extends Component {
+  componentWillMount() {
+    if (localStorage.getItem('AUTH') === null || localStorage.getItem('AUTH') === '') {
+        this.props.history.push('/login');
+        return;
+    }
+  }
 
   componentDidMount() {
+    if (localStorage.getItem('AUTH') === null || localStorage.getItem('AUTH') === '') {
+      this.props.history.push('/login');
+      return;
+    }
     this.initailAllData();
   }
 
