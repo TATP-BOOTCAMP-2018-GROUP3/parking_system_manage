@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
     parkingLots: state.parkingLots,
-    onShowForm: state.onShowForm
+    onShowParkingLotForm: state.onShowParkingLotForm
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -13,9 +13,9 @@ const mapDispatchToProps = dispatch => ({
             payload: parkingLots
         });
     },
-    toggleOnShowForm: () => {
+    toggleOnShowParkingLotForm: () => {
         dispatch({
-            type: "TOGGLE_ON_SHOW_FORM"
+            type: "TOGGLE_ON_SHOW_PARKING_LOT_FORM"
         });
     }
 });

@@ -80,9 +80,9 @@ export default class ParkingLotManagementPage extends Component {
   render() {
     return (
       <div>
-        {this.props.onShowForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} /> : null}
+        {this.props.onShowParkingLotForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} /> : null}
 
-        <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
+        <Button onClick={this.props.toggleOnShowParkingLotForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
           Add Parking Lot
           </Button>
         <Search

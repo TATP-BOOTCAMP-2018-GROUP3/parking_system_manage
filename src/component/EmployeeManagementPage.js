@@ -55,7 +55,7 @@ export default class EmployeeManagementPage extends Component {
   render(){ 
     return ( 
     <div>
-      { this.props.onShowForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} /> : null }      
+      { this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} /> : null }      
       <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
         Add Employee
       </Button>
