@@ -25,5 +25,16 @@ export default {
                 "phoneNum": phoneNumb
             })
         }
+    ),
+    forzenOrUnforzen: (record,newState) => fetch(hostname + resourceName  + "/" + record.id ,
+    {
+        method: 'PATCH', 
+        mode: 'cors',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('AUTH'),
+            'Content-Type' : 'application/json'
+        }),
+        body: JSON.stringify({workingStatus: newState})
+    }
     )
 }
