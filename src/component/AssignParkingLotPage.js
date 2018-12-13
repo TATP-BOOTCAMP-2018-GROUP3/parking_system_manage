@@ -8,14 +8,18 @@ const Search = Input.Search;
 
 const columns = 
   [{
-    title: 'Id',
+    title: 'Parking Clerk Id',
     dataIndex: 'id',
     key: 'id',
     render: text => <a href="javascript:;">{text}</a>,
   }, {
-    title: 'Name',
+    title: 'Account Name',
     dataIndex: 'accountName',
     key: 'accountName',
+  }, {
+    title: 'Full Name',
+    dataIndex: 'name',
+    key: 'name',
   }, {
     title: 'Phone Number',
     dataIndex: 'phoneNum',
@@ -27,11 +31,12 @@ const columns =
   }
 ];
 
-export default class ParkingBoyManagementPage extends Component {
+export default class AssignParkingLotPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      targetKeysOfParkingLots: []
+      targetKeysOfParkingLots: [],
+      searching: false
     };
   }
 
@@ -113,12 +118,39 @@ export default class ParkingBoyManagementPage extends Component {
           <div>
             <Search
               placeholder="input search text"
-              onSearch={value => console.log(value)}
+              onSearch={
+                (value) => {
+                  let tempClerks = this.props.parkingClerks.map((clerk) => {
+                    return {
+                      accountName: clerk.accountName,
+                      employeeId: clerk.employeeId,
+                      id: clerk.id,
+                      name: clerk.name,
+                      parking_status: clerk.parking_status,
+                      phoneNum: clerk.phoneNum,
+                      searchString: clerk.accountName + "|" + clerk.employeeId + "|" + clerk.id + "|" + clerk.name + "|" + clerk.parking_status + "|" + clerk.phoneNum + "|"
+                    }
+                  })
+                  this.setState(
+                    {
+                      parkingClerks: 
+                        tempClerks.filter((clerk) => {
+                          return (clerk.searchString.toUpperCase().indexOf(value.toUpperCase()) !== -1)
+                      }),
+                      searching: true
+                    }
+                  )
+                }
+              }
               style={{ width: 200 }}
             />
           </div>
         </span>
-        <Table columns={columns} expandedRowRender={this.generateTransfer} dataSource={this.props.parkingClerks} />
+        <Table 
+          columns={columns} 
+          expandedRowRender={this.generateTransfer} 
+          dataSource={(this.state.searching) ? this.state.parkingClerks : this.props.parkingClerks} 
+        />
       </div>
     )
   }

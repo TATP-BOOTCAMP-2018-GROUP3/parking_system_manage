@@ -3,10 +3,12 @@ import './App.css';
 import { Layout, Menu, Icon } from 'antd';
 import { Route, Link, Switch } from "react-router-dom"
 import EmployeeManagementContainer from "./containers/EmployeeManagementContainer"
-import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
 import ParkingLotManagementContainer from './containers/ParkingLotManagementContainer';
-import ParkingBoyManagementContainer from './containers/ParkingBoyManagementContainer';
+import AssignParkingLotContainer from './containers/AssignParkingLotContainer';
+import Welcome from './component/WelcomePage';
+import OrderManagementContainer from './containers/OrderManagementContainer';
+
 const { Header, Sider, Content } = Layout;
 
 class App extends Component {
@@ -37,29 +39,31 @@ class App extends Component {
           collapsed={this.state.collapsed}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
-              <Icon type="user" />
+          <Menu theme="dark" mode="inline">
+            {localStorage.getItem('ROLE') === "ADMIN" ? (
+              <Menu.Item key="1">
+              <Icon type="team" />
               <span>Empolyees</span>
               <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
-            </Menu.Item>   
+              </Menu.Item>
+            ): null}  
             <Menu.Item key="2">
-              <Icon type="video-camera" />
+              <Icon type="car" />
               <span>Parking Lots</span>
               <Link to="/ParkingLotManagementPage">ParkingLotManagementPage</Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>Parking Clerks</span>
-              <Link to="/ParkingBoyManagementPage">ParkingBoyManagementPage</Link>
+              <Icon type="user" />
+              <span>Assign Parking Lot</span>
+              <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
             </Menu.Item>
             <Menu.Item key="4">
-              <Icon type="video-camera" />
+              <Icon type="dashboard" />
               <span>Parking Dashboard</span>
               <Link to="/ParkingLotDashboard">ParkingLotDashboard</Link>
             </Menu.Item>
             <Menu.Item key="5">
-              <Icon type="video-camera" />
+              <Icon type="ordered-list" />
               <span>Order Management</span>
               <Link to="/OrderManagement">OrderManagement</Link>
             </Menu.Item>
@@ -80,9 +84,11 @@ class App extends Component {
             <Switch>
               <Route path="/EmployeeManagementPage" component={EmployeeManagementContainer}></Route>
               <Route path="/ParkingLotManagementPage" component={ParkingLotManagementContainer}></Route>
-              <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementContainer}></Route>
+              <Route path="/AssignParkingLotPage" component={AssignParkingLotContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
-              <Route path="/OrderManagement" component={OrderManagement}></Route>
+              <Route path="/OrderManagement" component={OrderManagementContainer}></Route>
+              <Route path="/Welcome" component={Welcome}/>
+              <Route component={Welcome}/>
             </Switch>
 
           </Content>
