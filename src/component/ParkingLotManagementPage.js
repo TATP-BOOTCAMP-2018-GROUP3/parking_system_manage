@@ -265,6 +265,7 @@ export default class ParkingLotManagementPage extends Component {
           bordered
           dataSource={(this.state.searching) ? this.state.parkingLots : this.props.parkingLots} 
           columns={columns}
+          style={{marginTop: 20}}
         />
       </div>
     )

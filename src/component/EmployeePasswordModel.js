@@ -5,7 +5,6 @@ export default class EmployeePasswordModel extends Component {
   state = { visible: true }
 
   handleOk = (e) => {
-    console.log(e);
     this.props.showPasswordModel()
   }
 
