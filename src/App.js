@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Layout, Menu, Icon } from 'antd';
-import { Route, Link, Switch } from "react-router-dom"
+import { Route, Link, Switch, Redirect } from "react-router-dom"
 import EmployeeManagementContainer from "./containers/EmployeeManagementContainer"
-import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
 import ParkingLotManagementContainer from './containers/ParkingLotManagementContainer';
 import AssignParkingLotContainer from './containers/AssignParkingLotContainer';
+import OrderManagementContainer from './containers/OrderManagementContainer';
+import LoginPage from './component/login/LoginPage';
+
+
 const { Header, Sider, Content } = Layout;
 
 class App extends Component {
@@ -28,6 +31,23 @@ class App extends Component {
     });
   }
 
+  parseHeaderFromPathName = () => {
+    switch (this.props.history.location.pathname){
+      case "/EmployeeManagementPage":
+        return "Employee Management";
+      case "/ParkingLotManagementPage":
+        return "Parking Lot Management";
+      case "/AssignParkingLotPage":
+        return "Assign Lot";
+      case "/ParkingLotDashboard":
+        return "Parking Lot Dashboard";
+      case "/OrderManagement":
+        return "Order Management";
+      default:
+        return "Admin Console";
+    }
+  }
+
   render() {
     return (
       <Layout id="components-layout-demo-custom-trigger" style={{ minHeight: '100vh' }}>
@@ -37,29 +57,31 @@ class App extends Component {
           collapsed={this.state.collapsed}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
-              <Icon type="user" />
-              <span>Empolyees</span>
-              <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
-            </Menu.Item>   
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} >
+            {localStorage.getItem('ROLE') === "ADMIN" ? (
+              <Menu.Item key="1">
+                <Icon type="team" />
+                <span>Empolyees</span>
+                <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
+              </Menu.Item>
+            ): null}  
             <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span>Parking Lots</span>
-              <Link to="/ParkingLotManagementPage">ParkingLotManagementPage</Link>
+                <Icon type="car" />
+                <span>Parking Lots</span>
+                <Link to="/ParkingLotManagementPage">ParkingLotManagementPage</Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>Assign Parking Lot</span>
-              <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
+                <Icon type="user" />
+                <span>Assign Parking Lot</span>
+                <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
             </Menu.Item>
             <Menu.Item key="4">
-              <Icon type="video-camera" />
+              <Icon type="dashboard" />
               <span>Parking Dashboard</span>
               <Link to="/ParkingLotDashboard">ParkingLotDashboard</Link>
             </Menu.Item>
             <Menu.Item key="5">
-              <Icon type="video-camera" />
+              <Icon type="ordered-list" />
               <span>Order Management</span>
               <Link to="/OrderManagement">OrderManagement</Link>
             </Menu.Item>
@@ -72,6 +94,8 @@ class App extends Component {
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            <img style={{height: '90%'}} src="images/parking_smart_logo.png"/>
+            <span style={{fontSize: '1.5em'}}>&nbsp;&nbsp;&nbsp;&nbsp;{this.parseHeaderFromPathName()}</span>
           </Header>
           <Content style={{
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
@@ -82,7 +106,8 @@ class App extends Component {
               <Route path="/ParkingLotManagementPage" component={ParkingLotManagementContainer}></Route>
               <Route path="/AssignParkingLotPage" component={AssignParkingLotContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
-              <Route path="/OrderManagement" component={OrderManagement}></Route>
+              <Route path="/OrderManagement" component={OrderManagementContainer}></Route>
+              <Route path="/" component={ParkingLotDashboardContainer}></Route>            
             </Switch>
 
           </Content>

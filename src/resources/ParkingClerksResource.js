@@ -10,6 +10,14 @@ export default {
                                 'Authorization': 'Bearer ' + localStorage.getItem('AUTH')
                             })
                         }),
+    getById: (id) => fetch(hostname + resourceName + "/id",
+                        {
+                            method: 'GET', 
+                            mode: 'cors',
+                            headers: new Headers({
+                                'Authorization': 'Bearer ' + localStorage.getItem('AUTH')
+                            })
+                        }),
     addEmployee: (account_name, email, phoneNumb) => fetch(hostname + resourceName ,
         {
             method: 'POST', 

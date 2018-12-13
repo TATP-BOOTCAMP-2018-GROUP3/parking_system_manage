@@ -5,8 +5,10 @@ const initialState = {
     onShowEmployeeForm: false,
     onShowParkingLotForm: false,
     onShowPasswordModel: false,
-    parkingOrders: [],
+    orders: [],
     parkingClerks: [],
+    parkingClerkNameMapping: {},
+    handlingOrder: {}
 };
   
 export default (state = initialState, { type, payload }) => {
@@ -26,15 +28,10 @@ export default (state = initialState, { type, payload }) => {
                 ...state,
                 employees: payload
                 }
-        case "GET_ALL_PARKING_ORDER":
+        case "REFRESH_ALL_ORDERS":
             return {
                 ...state,
-                parkingOrders: payload
-            }
-        case "REFRESH_ALL_PARKING_CLERKS":
-            return {
-                ...state,
-                parkingClerks: payload
+                orders: payload
             }
         case "REFRESH_ALL_PARKING_CLERKS":
             return {
@@ -55,6 +52,16 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 onShowPasswordModel: !state.onShowPasswordModel
+            }
+        case "REFRESH_PARKING_CLERK_NAME_MAPPING":
+            return {
+                ...state,
+                parkingClerkNameMapping: payload
+            }
+        case "HANDLING_ORDER":
+            return {
+                ...state,
+                parkingClerkNameMapping: payload
             }
         default:
             return state;
