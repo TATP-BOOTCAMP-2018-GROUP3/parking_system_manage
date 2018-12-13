@@ -1,4 +1,4 @@
-import ParkingBoyManagementPage from '../component/ParkingBoyManagementPage'
+import AssignParkingLotPage from '../component/AssignParkingLotPage'
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
@@ -21,6 +21,6 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-connect(mapStateToProps, mapDispatchToProps)(ParkingBoyManagementPage)
+connect(mapStateToProps, mapDispatchToProps)(AssignParkingLotPage)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ParkingBoyManagementPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AssignParkingLotPage)
