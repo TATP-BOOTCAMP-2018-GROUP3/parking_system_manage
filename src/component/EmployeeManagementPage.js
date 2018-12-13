@@ -4,6 +4,7 @@ import EmployeeResource from '../resources/EmployeeResource';
 import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 import EmployeePasswordModel from './EmployeePasswordModel';
 import ParkingClerksResource from '../resources/ParkingClerksResource';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -130,6 +131,27 @@ export default class EmployeeManagementPage extends Component {
       })
   }
 
+  createNotification = (popupMsg) => {
+    let type = popupMsg.type
+    switch (type) {
+        case 'info':
+            NotificationManager.info('Info message');
+            break;
+        case 'success':
+            NotificationManager.success(popupMsg.body, popupMsg.title);
+            break;
+        case 'warning':
+            NotificationManager.warning(popupMsg.body, popupMsg.title, 3000);
+            break;
+        case 'error':
+            NotificationManager.error(popupMsg.body, popupMsg.title, 5000, () => {
+                // alert('callback');
+            });
+            break;
+    };
+    popupMsg = null;
+}
+
   createColumn = () => {
     return [
       {
@@ -208,8 +230,6 @@ export default class EmployeeManagementPage extends Component {
     };
     
     let allEmployees = (this.state.searching) ? this.state.employees : this.props.employees
-    
-    console.log(allEmployees)
    
     let updatedEmployees = allEmployees.map(employee => {
       if (employee.id === updatedEmployee.id) {
@@ -222,6 +242,11 @@ export default class EmployeeManagementPage extends Component {
     EmployeeResource.updateEmployee(updatedEmployee)
       .then(res => {
         this.refeshAllEmployees();
+        this.createNotification({
+          "type": "success",
+          "title": "Updated",
+          "body": "The employee " + updatedEmployee.accountName + "'s record is updated"
+        })
       })
   }
 
@@ -240,7 +265,11 @@ export default class EmployeeManagementPage extends Component {
           .then(result => {
             this.props.refeshAllEmployees(result);
           })
-        alert("success")
+          this.createNotification({
+            "type": "success",
+            "title": "Updated",
+            "body": "The employee " + record.accountName + "'s record is updated"
+          })
       })
   }
   componentDidMount() {
@@ -333,6 +362,8 @@ export default class EmployeeManagementPage extends Component {
 
     return (
       <div>
+        <NotificationContainer />
+
         {this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} showPasswordModel={this.onShowPasswordModel} /> : null}
         {this.props.onShowPasswordModel ? <EmployeePasswordModel showPassword={this.returnPassword} showPasswordModel={this.onShowPasswordModel} /> : null}
         <Button onClick={this.props.toggleOnShowEmployeeForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>

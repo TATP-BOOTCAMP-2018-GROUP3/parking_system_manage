@@ -206,7 +206,7 @@ export default class ParkingLotManagementPage extends Component {
                     }else{
                       this.createNotification({
                         "type": "error",
-                        "title": "error",
+                        "title": "Error",
                         "body": "The parking lot " + record.parkingLotName + " cannot be closed"
                       })
                     }
@@ -259,6 +259,11 @@ export default class ParkingLotManagementPage extends Component {
     ParkingLotsResource.updateParkingLot(updatedParkingLot)
     .then(res => {
       this.refreshAllParkingLots();
+      this.createNotification({
+        "type": "success",
+        "title": "Updated",
+        "body": "The parking lot " + updatedParkingLot.parkingLotName + "'s record is updated"
+      })
     })
   }
 
