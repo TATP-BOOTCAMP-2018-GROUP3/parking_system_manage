@@ -31,7 +31,7 @@ const columns =
   }
 ];
 
-export default class ParkingBoyManagementPage extends Component {
+export default class AssignParkingLotPage extends Component {
   constructor(props) {
     super(props);
     this.state = {

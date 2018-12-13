@@ -6,7 +6,7 @@ import EmployeeManagementContainer from "./containers/EmployeeManagementContaine
 import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
 import ParkingLotManagementContainer from './containers/ParkingLotManagementContainer';
-import ParkingBoyManagementContainer from './containers/ParkingBoyManagementContainer';
+import AssignParkingLotContainer from './containers/AssignParkingLotContainer';
 const { Header, Sider, Content } = Layout;
 
 class App extends Component {
@@ -50,8 +50,8 @@ class App extends Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="upload" />
-              <span>Parking Clerks</span>
-              <Link to="/ParkingBoyManagementPage">ParkingBoyManagementPage</Link>
+              <span>Assign Parking Lot</span>
+              <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="video-camera" />
@@ -80,7 +80,7 @@ class App extends Component {
             <Switch>
               <Route path="/EmployeeManagementPage" component={EmployeeManagementContainer}></Route>
               <Route path="/ParkingLotManagementPage" component={ParkingLotManagementContainer}></Route>
-              <Route path="/ParkingBoyManagementPage" component={ParkingBoyManagementContainer}></Route>
+              <Route path="/AssignParkingLotPage" component={AssignParkingLotContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
               <Route path="/OrderManagement" component={OrderManagement}></Route>
             </Switch>
