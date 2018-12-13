@@ -41,6 +41,9 @@ class LoginPage extends Component {
                 })
                 .then(res => {
                     let tokenPayload = JSON.parse(atob(res.token.split('.')[1]));
+                    if (tokenPayload.role !== 'MANAGER' && tokenPayload !== 'ADMIN') {
+                        throw new Error("Login fail! Please check your login information!");
+                    }
                     localStorage.setItem('AUTH', res.token);
                     localStorage.setItem('ROLE', tokenPayload.role);
                     localStorage.setItem('ID', tokenPayload.id);
