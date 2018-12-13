@@ -274,11 +274,11 @@ export default class EmployeeManagementPage extends Component {
 
   forzenOrOnDuty(record) {
     let newState = ""
-    if (record.workingStatus === "freeze") {
+    if (record.workingStatus === "Freeze") {
       newState = "On Duty"
     }
     else {
-      newState = "freeze"
+      newState = "Freeze"
     }
     EmployeeResource.forzenOrUnforzen(record, newState)
       .then(result => {
