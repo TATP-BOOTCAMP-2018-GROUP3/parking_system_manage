@@ -10,7 +10,8 @@ export default class ParkingLotManagementPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parkingLots: this.props.parkingLots
+      parkingLots: this.props.parkingLots,
+      searching: false
     }
   }
 
@@ -77,10 +78,19 @@ export default class ParkingLotManagementPage extends Component {
     return (ParkingLotsResource.addLot(name, capacity))
   }
 
+  resetSearch = () => {
+   this.setState(
+     {
+      parkingLots: this.props.parkingLots,
+      searching: false
+     }
+   ) 
+  }
+
   render() {
     return (
       <div>
-        {this.props.onShowParkingLotForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} /> : null}
+        {this.props.onShowParkingLotForm ? <ParkingLotFormContainer onClickCreate={this.createParkingLot} afterCreate={this.resetSearch}/> : null}
 
         <Button onClick={this.props.toggleOnShowParkingLotForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
           Add Parking Lot
@@ -91,14 +101,16 @@ export default class ParkingLotManagementPage extends Component {
             (value) => {
               this.setState({
                 parkingLots: this.props.parkingLots.filter((lot) => {
-                  return (lot.parkingLotName.indexOf(value) != -1)
-                })
-              })
+                  return (lot.parkingLotName.indexOf(value) !== -1)
+                }),
+                searching: true
+              },
+              )
             }
           }
           style={{ width: 200 }}
         />
-        <Table columns={this.createColumn()} dataSource={this.state.parkingLots} />
+        <Table columns={this.createColumn()} dataSource={(this.state.searching)?this.state.parkingLots:this.props.parkingLots} />
       </div>
     )
   }

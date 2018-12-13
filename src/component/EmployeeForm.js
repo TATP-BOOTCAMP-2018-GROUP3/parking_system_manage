@@ -30,7 +30,6 @@ class EmployeeForm extends Component {
   };
 
   refresh = () => {
-    console.log("Enter")
     EmployeeResource.getAll()
     .then(result => result.json())
     .then(result => {
@@ -44,7 +43,6 @@ class EmployeeForm extends Component {
           if (!err) { 
             this.props.onClickCreate(values.account_name, values.email, values.phoneNumb)
             .then(result =>{
-              console.log(result)
               if(result.status === 201){
                 this.responseMessage('Employee created successfully.', 'info')
                 this.refresh()

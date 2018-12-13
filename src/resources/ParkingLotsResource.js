@@ -1,4 +1,4 @@
-const hostname = "https://parking-system-backend-prod.herokuapp.com";
+import { hostname } from'../config/Config';
 const resourceName = "/parkinglots";
 
 export default {
@@ -52,6 +52,6 @@ export default {
                             'Authorization': 'Bearer ' + localStorage.getItem('AUTH'),
                             'Content-Type' : 'application/json'
                         }),
-                        body: JSON.stringify({...parkingLot, employeeId: parkingClerkId})
+                        body: JSON.stringify({employeeId: parkingClerkId})
                     }),
 }

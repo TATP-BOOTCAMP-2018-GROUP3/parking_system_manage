@@ -30,7 +30,6 @@ class ParkingLotForm extends Component {
   };
 
   refresh = () => {
-    console.log("Enter")
     ParkingLotsResource.getAll()
     .then(result => result.json())
     .then(result => {
@@ -44,7 +43,6 @@ class ParkingLotForm extends Component {
           if (!err) { 
             this.props.onClickCreate(values.parkingLotName, values.capacity)
             .then(result =>{
-              console.log(result)
               if(result.status === 201){
                 this.responseMessage('Parking lot created successfully.', 'info')
                 this.refresh()
@@ -52,6 +50,7 @@ class ParkingLotForm extends Component {
               this.responseMessage('Parking lot already exist. Create failed.', 'error')
               }
             })
+            this.props.afterCreate()
           }
         });
     }

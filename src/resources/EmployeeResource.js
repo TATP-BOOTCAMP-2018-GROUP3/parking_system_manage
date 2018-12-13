@@ -1,4 +1,4 @@
-const hostname = "https://parking-system-backend-prod.herokuapp.com";
+import { hostname } from'../config/Config';
 const resourceName = "/employees";
 
 export default {
