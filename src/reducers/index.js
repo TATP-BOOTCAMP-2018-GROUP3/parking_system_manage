@@ -1,7 +1,8 @@
 const initialState = {
     parkingLots: [],
     employees: [],
-    onShowForm: false,
+    onShowEmployeeForm: false,
+    onShowParkingLotForm: false,
     parkingOrders: [],
     parkingClerks: [],
 };
@@ -13,10 +14,10 @@ export default (state = initialState, { type, payload }) => {
                 ...state,
                 parkingLots: payload
             }
-        case "TOGGLE_ON_SHOW_FORM":
+        case "TOGGLE_ON_SHOW_PARKING_LOT_FORM":
             return {
                 ...state,
-                onShowForm: !state.onShowForm
+                onShowParkingLotForm: !state.onShowParkingLotForm
             }
         case "REFRESH_ALL_EMPLOYEES":
             return {
@@ -38,6 +39,11 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 parkingClerks: payload
+            }
+        case "TOGGLE_ON_SHOW_EMPLOYEE_FORM":
+            return {
+                ...state,
+                onShowEmployeeForm: !state.onShowEmployeeForm
             }
         default:
             return state;
