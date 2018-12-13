@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
     employees: state.employees,
-    onShowForm: state.onShowForm
+    onShowEmployeeForm: state.onShowEmployeeForm
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
     },
     toggleOnShowForm: () => {
         dispatch({
-            type: "TOGGLE_ON_SHOW_FORM"
+            type: "TOGGLE_ON_SHOW_EMPLOYEE_FORM"
         });
     }
 });
