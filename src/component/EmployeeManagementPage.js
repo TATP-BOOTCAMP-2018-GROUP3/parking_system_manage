@@ -5,40 +5,64 @@ import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 
 const Search = Input.Search;
 
-const columns = [{
-  title: 'Id',
-  dataIndex: 'id',
-  key: 'id',
-  render: text => <a href="javascript:;">{text}</a>,
-}, {
-  title: 'Name',
-  dataIndex: 'accountName',
-  key: 'accountName',
-}, {
-  title: 'Phone Number',
-  dataIndex: 'phoneNum',
-  key: 'phoneNum',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="javascript:;">Edit</a>
-      <Divider type="vertical" />
-      <Popconfirm title="Sure to delete?" onConfirm={() => {
-        const data = this.state.data
-        this.setState({
-          data: data.filter(item => item.key !== record.key)
-        })
-      }}>
-        <a href="javascript:;">Freeze</a>
-      </Popconfirm>
-    </span>
-  ),
-}];
+
  
 
 export default class EmployeeManagementPage extends Component {
+
+  createColumn = () => {
+    return[{
+    title: 'Id',
+    dataIndex: 'id',
+    key: 'id',
+    render: text => <a href="javascript:;">{text}</a>,
+  }, {
+    title: 'Name',
+    dataIndex: 'accountName',
+    key: 'accountName',
+  }, {
+    title: 'Phone Number',
+    dataIndex: 'phoneNum',
+    key: 'phoneNum',
+  }, {
+    title: 'Status',
+    dataIndex: 'workingStatus',
+    key: 'workingStatus',
+  },{
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => (
+      <span>
+        <a href="javascript:;">Edit</a>
+        <Divider type="vertical" />
+        <Popconfirm title="Confirm to close?" onConfirm={() => {
+          let newState =""
+          console.log(newState)
+          if (record.workingStatus =="freeze"){
+            newState ="On Duty"
+          }
+          else{
+            newState ="freeze"
+          }
+          console.log(newState)
+          
+                      EmployeeResource.forzenOrUnforzen(record,newState)
+                      .then(result => {
+                          alert(result.status)
+                          EmployeeResource.getAll()
+                            .then(result => result.json())
+                            .then(result => {
+                              this.props.refeshAllEmployees(result);
+                            })
+                        
+                      })
+                    }}>
+          <a href="javascript:;">Freeze</a>
+        </Popconfirm>
+      </span>
+    ),
+  }];
+  }
 
   componentDidMount() {
     EmployeeResource.getAll()
@@ -68,7 +92,7 @@ export default class EmployeeManagementPage extends Component {
           />
         </div>
       </span>
-    <Table columns={columns} dataSource={this.props.employees} />
+    <Table columns={this.createColumn()} dataSource={this.props.employees} />
     </div>
     )
   }
