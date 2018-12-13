@@ -229,7 +229,6 @@ export default class EmployeeManagementPage extends Component {
   }
 
   searchEmployee = (value) => {
-      console.log(this.props.employees)
       let tempEmployee = this.props.employees.map((clerk) => {
         return {
           accountName: clerk.accountName,
