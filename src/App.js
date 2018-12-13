@@ -31,6 +31,23 @@ class App extends Component {
     });
   }
 
+  parseHeaderFromPathName = () => {
+    switch (this.props.history.location.pathname){
+      case "/EmployeeManagementPage":
+        return "Employee Management";
+      case "/ParkingLotManagementPage":
+        return "Parking Lot Management";
+      case "/AssignParkingLotPage":
+        return "Assign Lot";
+      case "/ParkingLotDashboard":
+        return "Parking Lot Dashboard";
+      case "/OrderManagement":
+        return "Order Management";
+      default:
+        return "Admin Console";
+    }
+  }
+
   render() {
     return (
       <Layout id="components-layout-demo-custom-trigger" style={{ minHeight: '100vh' }}>
@@ -40,23 +57,23 @@ class App extends Component {
           collapsed={this.state.collapsed}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline">
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} >
             {localStorage.getItem('ROLE') === "ADMIN" ? (
               <Menu.Item key="1">
-              <Icon type="team" />
-              <span>Empolyees</span>
-              <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
+                <Icon type="team" />
+                <span>Empolyees</span>
+                <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
               </Menu.Item>
             ): null}  
             <Menu.Item key="2">
-              <Icon type="car" />
-              <span>Parking Lots</span>
-              <Link to="/ParkingLotManagementPage">ParkingLotManagementPage</Link>
+                <Icon type="car" />
+                <span>Parking Lots</span>
+                <Link to="/ParkingLotManagementPage">ParkingLotManagementPage</Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="user" />
-              <span>Assign Parking Lot</span>
-              <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
+                <Icon type="user" />
+                <span>Assign Parking Lot</span>
+                <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="dashboard" />
@@ -77,6 +94,8 @@ class App extends Component {
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            <img style={{height: '90%'}} src="images/parking_smart_logo.png"/>
+            <span style={{fontSize: '1.5em'}}>&nbsp;&nbsp;&nbsp;&nbsp;{this.parseHeaderFromPathName()}</span>
           </Header>
           <Content style={{
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
