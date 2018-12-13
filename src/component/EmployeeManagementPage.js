@@ -35,33 +35,45 @@ export default class EmployeeManagementPage extends Component {
       <span>
         <a href="javascript:;">Edit</a>
         <Divider type="vertical" />
-        <Popconfirm title="Confirm to close?" onConfirm={() => {
-          let newState =""
-          if (record.workingStatus =="freeze"){
-            newState ="On Duty"
-          }
-          else{
-            newState ="freeze"
-          }
-          
-                      EmployeeResource.forzenOrUnforzen(record,newState)
-                      .then(result => {
-                          alert("Success")
-                          EmployeeResource.getAll()
-                            .then(result => result.json())
-                            .then(result => {
-                              this.props.refeshAllEmployees(result);
-                            })
-                        
-                      })
-                    }}>
-          <a href="javascript:;">Freeze</a>
-        </Popconfirm>
+        {(record.workingStatus == "On Duty") ? (<Popconfirm
+                                    title="Confirm to close?"
+                                    onConfirm={() => {
+                                        this.forzenOrOnDuty(record)
+                                    }}
+                                >
+                                    <a>Freeze</a>
+                                </Popconfirm>)
+                                : (
+                                    <a onClick={() => {
+                                        this.forzenOrOnDuty(record)
+                                    }}>On Duty</a>
+                                )
+}
       </span>
     ),
   }];
   }
 
+  forzenOrOnDuty(record) {
+    let newState =""
+    if (record.workingStatus =="freeze"){
+      newState ="On Duty"
+    }
+    else{
+      newState ="freeze"
+    }
+    
+                EmployeeResource.forzenOrUnforzen(record,newState)
+                .then(result => {
+                    alert("Success")
+                    EmployeeResource.getAll()
+                      .then(result => result.json())
+                      .then(result => {
+                        this.props.refeshAllEmployees(result);
+                      })
+                  
+                })
+              }
   componentDidMount() {
     EmployeeResource.getAll()
     .then(result => result.json())
