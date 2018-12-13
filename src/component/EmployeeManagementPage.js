@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input, Popconfirm, Form} from 'antd';
+import { Table, Divider, Button, Input, Popconfirm, Form } from 'antd';
 import EmployeeResource from '../resources/EmployeeResource';
 import EmployeeFormContainer from '../containers/EmployeeFormContainer';
 import EmployeePasswordModel from './EmployeePasswordModel';
@@ -95,14 +95,14 @@ class EditableCell extends React.Component {
                     )}
                   </FormItem>
                 ) : (
-                  <div
-                    className="editable-cell-value-wrap"
-                    style={{ paddingRight: 24 }}
-                    onClick={this.toggleEdit}
-                  >
-                    {restProps.children}
-                  </div>
-                )
+                    <div
+                      className="editable-cell-value-wrap"
+                      style={{ paddingRight: 24 }}
+                      onClick={this.toggleEdit}
+                    >
+                      {restProps.children}
+                    </div>
+                  )
               );
             }}
           </EditableContext.Consumer>
@@ -114,103 +114,161 @@ class EditableCell extends React.Component {
 
 export default class EmployeeManagementPage extends Component {
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        employees: this.props.employees,
-        searching: false
-      }
+  constructor(props) {
+    super(props);
+    this.state = {
+      employees: this.props.employees,
+      searching: false
     }
+  }
+
+  refeshAllEmployees = () => {
+    EmployeeResource.getAll()
+      .then(result => result.json())
+      .then(result => {
+        this.props.refeshAllEmployees(result);
+      })
+  }
 
   createColumn = () => {
-    return[{
-    title: 'Id',
-    dataIndex: 'id',
-    key: 'id',
-    render: text => <a href="javascript:;">{text}</a>,
-    }, {
-      title: 'Name',
-      dataIndex: 'accountName',
-      key: 'accountName',
-    }, {
-      title: 'Phone Number',
-      dataIndex: 'phoneNum',
-      key: 'phoneNum',
-    }, {
-      title: 'Status',
-      dataIndex: 'workingStatus',
-      key: 'workingStatus',
-    },{
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <a href="javascript:;">Edit</a>
-        <Divider type="vertical" />
-        {(record.workingStatus == "On Duty") ? (<Popconfirm
-                                    title="Confirm to close?"
-                                    onConfirm={() => {
-                                        this.forzenOrOnDuty(record)
-                                    }}
-                                >
-                                    <a>Freeze</a>
-                                </Popconfirm>)
-                                : (
-                                    <a onClick={() => {
-                                        this.forzenOrOnDuty(record)
-                                    }}>On Duty</a>
-                                )
-}
-      </span>
-    ),
-  }];
+    return [
+      {
+        title: 'Id',
+        dataIndex: 'id',
+        key: 'id',
+        render: text => <a href="javascript:;">{text}</a>,
+      }, {
+        title: 'Name',
+        dataIndex: 'accountName',
+        key: 'accountName',
+        editable: true,
+      }, {
+        title: 'Full Name',
+        dataIndex: 'name',
+        key: 'name',
+        editable: true,
+      }, {
+        title: 'Phone Number',
+        dataIndex: 'phoneNum',
+        key: 'phoneNum',
+        editable: true,
+      }, {
+        title: 'Email Address',
+        dataIndex: 'email',
+        key: 'email',
+        editable: true,
+      }, {
+        title: 'Role',
+        dataIndex: 'role',
+        key: 'role',
+        editable: true,
+      }, {
+        title: 'Status',
+        dataIndex: 'workingStatus',
+        key: 'workingStatus',
+      }, {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <div>
+            {
+              (record.workingStatus === "On Duty") ?
+                (<Popconfirm
+                  title="Confirm to freeze?"
+                  onConfirm={
+                    () => {
+                      this.forzenOrOnDuty(record)
+                    }
+                  }
+                >
+                  <a>Freeze</a>
+                </Popconfirm>)
+                :
+                (<a onClick={
+                  () => {
+                    this.forzenOrOnDuty(record)
+                  }
+                }>Change to On Duty</a>
+                )
+            }
+          </div>
+        )
+      }
+    ]
+  }
+
+  handleSave = (row) => {
+    let updatedEmployee = {
+      accountName: row.accountName,
+      name: row.name,
+      phoneNum: row.phoneNum,
+      email: row.email,
+      role: row.role,
+      id: row.id
+    };
+    
+    let allEmployees = (this.state.searching) ? this.state.employees : this.props.employees
+    
+    console.log(allEmployees)
+   
+    let updatedEmployees = allEmployees.map(employee => {
+      if (employee.id === updatedEmployee.id) {
+        return { ...employee, accountName: updatedEmployee.accountName, name: updatedEmployee.name, phoneNum: updatedEmployee.phoneNum, email: updatedEmployee.email, role: updatedEmployee.role};
+      } else {
+        return employee;
+      }
+    })
+    this.props.refeshAllEmployees(updatedEmployees);
+    EmployeeResource.updateEmployee(updatedEmployee)
+      .then(res => {
+        this.refeshAllEmployees();
+      })
   }
 
   forzenOrOnDuty(record) {
-    let newState =""
-    if (record.workingStatus =="freeze"){
-      newState ="On Duty"
+    let newState = ""
+    if (record.workingStatus === "freeze") {
+      newState = "On Duty"
     }
-    else{
-      newState ="freeze"
+    else {
+      newState = "freeze"
     }
-    EmployeeResource.forzenOrUnforzen(record,newState)
-    .then(result => {
-        alert("Success")
+    EmployeeResource.forzenOrUnforzen(record, newState)
+      .then(result => {
         EmployeeResource.getAll()
           .then(result => result.json())
           .then(result => {
             this.props.refeshAllEmployees(result);
           })
-      
-    })
+        alert("success")
+      })
   }
   componentDidMount() {
     EmployeeResource.getAll()
-    .then(result => result.json())
-    .then(result => {
-      this.props.refeshAllEmployees(result);
-    })
+      .then(result => result.json())
+      .then(result => {
+        this.props.refeshAllEmployees(result);
+      })
   }
 
   createEmployee = (accountName, email, phoneNumb) => {
     this.props.toggleOnShowEmployeeForm()
     return (
       ParkingClerksResource.addEmployee(accountName, email, phoneNumb)
-      .then(result => {
-        if (result.status === 201){
-          return result.json()
-        } else {
-          return null
-        }
-      })
-      .then(result => {
+        .then(result => {
+          if (result.status === 201) {
+            return result.json()
+          } else {
+            return null
+          }
+        })
+        .then(result => {
           this.props.returnPasswordAfterCreate(result);
           return result
-      })
-      )
+        })
+    )
   }
-  
+
   onShowPasswordModel = () => {
     this.props.toggleOnShowPasswordModel()
   }
@@ -229,33 +287,33 @@ export default class EmployeeManagementPage extends Component {
   }
 
   searchEmployee = (value) => {
-      let tempEmployee = this.props.employees.map((clerk) => {
-        return {
-          accountName: clerk.accountName,
-          email: clerk.email,
-          id: clerk.id,
-          name: clerk.name,
-          phoneNum: clerk.phoneNum,
-          role: clerk.role,
-          workingStatus: clerk.workingStatus,
-          searchString: clerk.accountName + "|" + clerk.email + "|" + clerk.id + "|" + clerk.name + "|" + clerk.phoneNum + "|" + clerk.role + "|" + clerk.workingStatus + "|"
-        }
-      })
-      this.setState({
-        employees: tempEmployee.filter((employee) => (employee.searchString.indexOf(value) !== -1)),
-        searching: true
-      },
+    let tempEmployee = this.props.employees.map((clerk) => {
+      return {
+        accountName: clerk.accountName,
+        email: clerk.email,
+        id: clerk.id,
+        name: clerk.name,
+        phoneNum: clerk.phoneNum,
+        role: clerk.role,
+        workingStatus: clerk.workingStatus,
+        searchString: clerk.accountName + "|" + clerk.email + "|" + clerk.id + "|" + clerk.name + "|" + clerk.phoneNum + "|" + clerk.role + "|" + clerk.workingStatus + "|"
+      }
+    })
+    this.setState({
+      employees: tempEmployee.filter((employee) => (employee.searchString.indexOf(value) !== -1)),
+      searching: true
+    },
     )
   }
 
-  render(){
+  render() {
 
     const components = {
       body: {
         row: EditableFormRow,
         cell: EditableCell,
       },
-    }; 
+    };
 
     const columns = this.createColumn().map((col) => {
       if (!col.editable) {
@@ -273,26 +331,26 @@ export default class EmployeeManagementPage extends Component {
       };
     });
 
-    return ( 
-    <div>
-      { this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} showPasswordModel={this.onShowPasswordModel}/> : null }      
-      { this.props.onShowPasswordModel ? <EmployeePasswordModel showPassword={this.returnPassword} showPasswordModel={this.onShowPasswordModel}/> : null }
-      <Button onClick={this.props.toggleOnShowEmployeeForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
-        Add Employee
+    return (
+      <div>
+        {this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} showPasswordModel={this.onShowPasswordModel} /> : null}
+        {this.props.onShowPasswordModel ? <EmployeePasswordModel showPassword={this.returnPassword} showPasswordModel={this.onShowPasswordModel} /> : null}
+        <Button onClick={this.props.toggleOnShowEmployeeForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
+          Add Employee
       </Button>
-      <Search
-        placeholder="Search employee"
-        onSearch={(value) => {this.searchEmployee(value)}}
-        style={{ width: 200 }}
-      />
-    <Table 
-      components={components}
-      rowClassName={() => 'editable-row'}
-      bordered
-      dataSource={(this.state.searching) ? this.state.employees : this.props.employees}
-      columns={columns}
-      style={{marginTop: 20}}/>
-    </div>
+        <Search
+          placeholder="Search employee"
+          onSearch={(value) => { this.searchEmployee(value) }}
+          style={{ width: 200 }}
+        />
+        <Table
+          components={components}
+          rowClassName={() => 'editable-row'}
+          bordered
+          dataSource={(this.state.searching) ? this.state.employees : this.props.employees}
+          columns={columns}
+          style={{ marginTop: 20 }} />
+      </div>
     )
   }
 }
