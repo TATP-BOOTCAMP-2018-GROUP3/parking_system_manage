@@ -202,6 +202,7 @@ export default class ParkingLotManagementPage extends Component {
 
 
   createParkingLot = (name, capacity) => {
+    this.props.toggleOnShowParkingLotForm()
     return (ParkingLotsResource.addLot(name, capacity))
   }
 
