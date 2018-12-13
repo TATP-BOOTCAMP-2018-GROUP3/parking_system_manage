@@ -261,7 +261,7 @@ export default class ParkingLotManagementPage extends Component {
             (value) => {
               this.setState({
                 parkingLots: this.props.parkingLots.filter((lot) => {
-                  return (lot.parkingLotName.indexOf(value) !== -1)
+                  return (lot.parkingLotName.toUpperCase().indexOf(value.toUpperCase()) !== -1)
                 }),
                 searching: true
               },
