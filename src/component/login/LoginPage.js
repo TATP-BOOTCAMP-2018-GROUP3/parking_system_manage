@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button, Layout, Row, Col  } from 'antd';
+import { Form, Icon, Input, Button, Layout, Alert } from 'antd';
 import '../../css/LoginPage.css'
 import AuthResource from '../../resources/AuthResource';
 
 const FormItem = Form.Item;
 const {
-    Header, Footer, Sider, Content,
+    Header,
+    Content,
 } = Layout;
   
 
 class LoginPage extends Component {
     constructor(props) {
         super(props);
+        this.state = {error: undefined}
     }
 
     handleSubmit = (e) => {
@@ -21,8 +23,10 @@ class LoginPage extends Component {
             if (!err) {
                 AuthResource.login({accountName: values.userName, password: values.password})
                 .then(res => {
-                    if (!(res.status === 200)) {
-                        throw new Error(res.status)
+                    if (res.status === 400) {
+                        throw new Error("Login fail! Please check your login information!");
+                    } else if (res.status === 500) {
+                        throw new Error("Service is currently unavailable.");
                     }
                     return res.json();
                 })
@@ -35,11 +39,7 @@ class LoginPage extends Component {
                     this.props.history.push('/');
                 })
                 .catch(error => {
-                    if (error.message === '400') {
-                        console.log('login fail!');
-                    } else if (error.message === '500') {
-                        console.log('server unavailable');
-                    }
+                    this.setState({error: error.message})
                 })
             }
         });
@@ -49,8 +49,11 @@ class LoginPage extends Component {
         const { getFieldDecorator } = this.props.form;
         return (
             <Layout style={{ minHeight: '100vh' }}>
-            <Content style={{paddingLeft: '2em', paddingTop: '5em'}}>
+            <Header></Header>
+            <Content style={{paddingLeft: '2em'}}>
+            <img src="/images/parking_smart_logo.png" style={{paddingLeft: '1.5em', paddingBottom: '1em', width: '15%'}}/>
             <Form onSubmit={this.handleSubmit} className="login-form">
+                <h2 style={{textAlign: 'center'}}>Admin Console</h2>
                 <FormItem>
                 {getFieldDecorator('userName', {
                     rules: [{ required: true, message: 'Please input your username!' }],
@@ -71,6 +74,14 @@ class LoginPage extends Component {
                     Log in
                 </Button>
                 </FormItem>
+                {this.state.error === undefined ? null : 
+                    <Alert
+                        message="Error"
+                        description={this.state.error}
+                        type="error"
+                        showIcon
+                    />
+                }
             </Form>
             </Content>
             </Layout>

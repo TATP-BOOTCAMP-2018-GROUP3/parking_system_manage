@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { Table, Divider, Button, Input, Popconfirm} from 'antd';
 import EmployeeResource from '../resources/EmployeeResource';
 import EmployeeFormContainer from '../containers/EmployeeFormContainer';
+import EmployeePasswordModel from './EmployeePasswordModel';
+import ParkingClerksResource from '../resources/ParkingClerksResource';
 
 const Search = Input.Search;
-
-
- 
 
 export default class EmployeeManagementPage extends Component {
 
@@ -83,26 +82,45 @@ export default class EmployeeManagementPage extends Component {
   }
 
   createEmployee = (accountName, email, phoneNumb) => {
-    return (EmployeeResource.addEmployee(accountName, email, phoneNumb))
+    this.props.toggleOnShowEmployeeForm()
+    return (
+      ParkingClerksResource.addEmployee(accountName, email, phoneNumb)
+      .then(result => {
+        if (result.status === 201){
+          return result.json()
+        } else {
+          return null
+        }
+      })
+      .then(result => {
+          this.props.returnPasswordAfterCreate(result);
+          return result
+      })
+      )
+  }
+  
+  onShowPasswordModel = () => {
+    this.props.toggleOnShowPasswordModel()
+  }
+
+  returnPassword = () => {
+    return this.props.employeePassword
   }
 
   render(){ 
     return ( 
     <div>
-      { this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} /> : null }      
-      <Button onClick={this.props.toggleOnShowForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
+      { this.props.onShowEmployeeForm ? <EmployeeFormContainer onClickCreate={this.createEmployee} showPasswordModel={this.onShowPasswordModel}/> : null }      
+      { this.props.onShowPasswordModel ? <EmployeePasswordModel showPassword={this.returnPassword} showPasswordModel={this.onShowPasswordModel}/> : null }
+      <Button onClick={this.props.toggleOnShowEmployeeForm} type="primary" style={{ marginRight: 16, marginTop: 40 }}>
         Add Employee
       </Button>
-      <span>
-        <div>
-          <Search
-            placeholder="input search text"
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
-        </div>
-      </span>
-    <Table columns={this.createColumn()} dataSource={this.props.employees} />
+      <Search
+        placeholder="input search text"
+        onSearch={value => console.log(value)}
+        style={{ width: 200 }}
+      />
+    <Table columns={this.createColumn()} dataSource={this.props.employees} style={{marginTop: 20}}/>
     </div>
     )
   }

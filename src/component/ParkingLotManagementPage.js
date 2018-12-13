@@ -214,6 +214,7 @@ export default class ParkingLotManagementPage extends Component {
 
 
   createParkingLot = (name, capacity) => {
+    this.props.toggleOnShowParkingLotForm()
     return (ParkingLotsResource.addLot(name, capacity))
   }
 
@@ -276,6 +277,7 @@ export default class ParkingLotManagementPage extends Component {
           bordered
           dataSource={(this.state.searching) ? this.state.parkingLots : this.props.parkingLots} 
           columns={columns}
+          style={{marginTop: 20}}
         />
       </div>
     )

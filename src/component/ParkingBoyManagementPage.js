@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, Input, Popconfirm } from 'antd';
+import { Table, Input } from 'antd';
 import ParkingClerksResource from '../resources/ParkingClerksResource';
 import ParkingLotsResource from '../resources/ParkingLotsResource';
 import {Transfer} from 'antd';
