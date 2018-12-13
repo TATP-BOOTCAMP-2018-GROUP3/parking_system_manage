@@ -229,8 +229,21 @@ export default class EmployeeManagementPage extends Component {
   }
 
   searchEmployee = (value) => {
+      console.log(this.props.employees)
+      let tempEmployee = this.props.employees.map((clerk) => {
+        return {
+          accountName: clerk.accountName,
+          email: clerk.email,
+          id: clerk.id,
+          name: clerk.name,
+          phoneNum: clerk.phoneNum,
+          role: clerk.role,
+          workingStatus: clerk.workingStatus,
+          searchString: clerk.accountName + "|" + clerk.email + "|" + clerk.id + "|" + clerk.name + "|" + clerk.phoneNum + "|" + clerk.role + "|" + clerk.workingStatus + "|"
+        }
+      })
       this.setState({
-        employees: this.props.employees.filter((employee) => (employee.accountName.indexOf(value) !== -1)),
+        employees: tempEmployee.filter((employee) => (employee.searchString.indexOf(value) !== -1)),
         searching: true
       },
     )
