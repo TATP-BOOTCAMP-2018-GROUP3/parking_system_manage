@@ -159,22 +159,34 @@ export default class ParkingLotManagementPage extends Component {
       {
         title: 'operation',
         dataIndex: 'operation',
-        render: (text, record) => (
-          this.props.parkingLots.length >= 1
-            ? (
-            <Popconfirm title="Confirm to close?" onConfirm={() => {
+        render: (text, record) => {
+          console.log(record)
+          return (
+            (record.status === 'open') ?  
+          <Popconfirm title="Confirm to close?" onConfirm={() => {
                 ParkingLotsResource.closeLot(record.id)
                   .then(result => {
                     if (result.status === 200) {
-                      alert("Deleted");
+                      alert("Closed");
                       this.refreshAllParkingLots();
                     }
                   })
               }}>
               <a href="javascript:;">Close</a>
             </Popconfirm>
-            ) : null
-        ),
+            :
+            <Popconfirm title="Confirm to open?" onConfirm={() => {
+              ParkingLotsResource.openLot(record.id)
+                .then(result => {
+                  if (result.status === 200) {
+                    alert("Opened");
+                    this.refreshAllParkingLots();
+                  }
+                })
+            }}>
+            <a href="javascript:;">Open</a>
+          </Popconfirm>
+        )},
       }
     ];
   }
