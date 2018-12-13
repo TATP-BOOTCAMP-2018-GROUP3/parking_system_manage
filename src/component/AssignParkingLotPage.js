@@ -86,8 +86,10 @@ export default class AssignParkingLotPage extends Component {
   generateTransfer = (employee) => {
     let editingEmployeeId = employee.id;
     let usableParkinglotData = this.props.parkingLots
-                              .filter(lot=>((lot.employeeId === null) || lot.employeeId == employee.id))
+                              .filter(lot=>(lot.status === "open" && (lot.employeeId === null) || lot.employeeId == employee.id))
                               .map(lot=> ({title: lot.parkingLotName, key: lot.id, description:'test', employeeId: lot.employeeId}));
+    console.log(usableParkinglotData)
+    console.log(this.props.parkingLots)
     let targetKeysOfParkingLots = usableParkinglotData
                       .filter(lot => (lot.employeeId == employee.id))
                       .map(lot=>lot.key);
