@@ -37,18 +37,16 @@ export default class EmployeeManagementPage extends Component {
         <Divider type="vertical" />
         <Popconfirm title="Confirm to close?" onConfirm={() => {
           let newState =""
-          console.log(newState)
           if (record.workingStatus =="freeze"){
             newState ="On Duty"
           }
           else{
             newState ="freeze"
           }
-          console.log(newState)
           
                       EmployeeResource.forzenOrUnforzen(record,newState)
                       .then(result => {
-                          alert(result.status)
+                          alert("Success")
                           EmployeeResource.getAll()
                             .then(result => result.json())
                             .then(result => {
