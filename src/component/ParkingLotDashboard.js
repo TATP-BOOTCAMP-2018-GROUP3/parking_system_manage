@@ -23,7 +23,7 @@ export default class ParkingLotDashboard extends Component {
             .then(result => {
                 let map = {};
                 result.forEach(parkingClerks => {
-                    map[parkingClerks.employeeId] = parkingClerks.accountName;
+                    map[parkingClerks.id] = parkingClerks.accountName;
                 });
                 this.setState({ ...this.state, parkingClerkNameMapping: map });
             })

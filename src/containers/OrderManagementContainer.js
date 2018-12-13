@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 const mapStateToProps = state => ({
     orders: state.orders,
     parkingClerkNameMapping: state.parkingClerkNameMapping,
+    parkingClerks: state.parkingClerks,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -17,6 +18,12 @@ const mapDispatchToProps = dispatch => ({
         dispatch({
             type: "REFRESH_PARKING_CLERK_NAME_MAPPING",
             payload: parkingClerkNameMapping
+        });
+    },
+    refreshAllParkingClerks: parkingClerks => {
+        dispatch({
+            type: "REFRESH_ALL_PARKING_CLERKS",
+            payload: parkingClerks
         });
     },
 });

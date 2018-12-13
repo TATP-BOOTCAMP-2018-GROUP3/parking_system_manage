@@ -143,9 +143,10 @@ export default class OrderManagementPage extends Component {
     ParkingClerksResource.getAll()
     .then(result => result.json())
     .then(result => {
+        this.props.refreshAllParkingClerks(result);
         let map = {};
         result.forEach(parkingClerks => {
-            map[parkingClerks.employeeId] = parkingClerks.accountName;
+            map[parkingClerks.id] = parkingClerks.accountName;
         });
         this.props.getParkingClerkNameMapping(map);
         ParkingOrderResource.getAll()
@@ -251,7 +252,8 @@ export default class OrderManagementPage extends Component {
   }
 
   assignClerks = (value, order) => {
-    ParkingOrderResource.grab({id: order.id, carId: order.carId, phoneNumber: order.phoneNumber}, value)
+    let clerk = this.props.parkingClerks.find(clerk => clerk.id == value);
+    ParkingOrderResource.grab({id: order.id, carId: order.carId, phoneNumber: order.phoneNumber}, clerk.employeeId)
     .then(res => this.initailAllData())
   }
 
