@@ -46,7 +46,7 @@ export default class ParkingLotDashboard extends Component {
                                     <br></br>
                                     <br></br>
                                     <Col span={10}>
-                                        <b>ParkingBoy：</b> {this.state.parkingClerkNameMapping[item.employeeId]}
+                                        <b>ParkingBoy：</b> <u>{this.state.parkingClerkNameMapping[item.employeeId]}</u>
                                     </Col>
                                     <Col span={10}>
                                         <b>Status: </b> {(item.status === "close")? <font color="red">Closed</font> : <font color="blue">Opened</font>}
