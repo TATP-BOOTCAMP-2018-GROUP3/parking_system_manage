@@ -24,16 +24,28 @@ export default {
             })
         }
     ),
-    closeLot: (id) =>   fetch(hostname + resourceName + "/" + id,
+    closeLot: (id) => fetch(hostname + resourceName + "/" + id,
         {
-            method: 'DELETE', 
+            method: 'PATCH', 
             mode: 'cors',
             headers: new Headers({
                 'Authorization': 'Bearer ' + localStorage.getItem('AUTH'),
                 'Content-Type': 'application/json'
             }),
+            body: JSON.stringify({status: "close"})
         }
     ),
+    openLot: (id) => fetch(hostname + resourceName + "/" + id,
+    {
+        method: 'PATCH', 
+        mode: 'cors',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('AUTH'),
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({status: "open"})
+    }
+),
     unassignClerk: (parkingLot) => fetch(hostname + resourceName + "/" + parkingLot.id ,
                     {
                         method: 'PUT', 
@@ -53,5 +65,15 @@ export default {
                             'Content-Type' : 'application/json'
                         }),
                         body: JSON.stringify({employeeId: parkingClerkId})
+                    }),
+    updateParkingLot: (parkingLot) => fetch(hostname + resourceName + "/" + parkingLot.id,
+                    {
+                        method: 'PATCH',
+                        mode: 'cors',
+                        headers: new Headers({
+                            'Authorization': 'Bearer ' + localStorage.getItem('AUTH'),
+                            'Content-Type': 'application/json'
+                        }),
+                        body: JSON.stringify(parkingLot)
                     }),
 }
