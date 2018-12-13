@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Popconfirm, Form } from 'antd';
+import { Table, Button, Input, Popconfirm, Form, Tag } from 'antd';
 import ParkingLotsResource from '../resources/ParkingLotsResource';
 import ParkingLotFormContainer from '../containers/ParkingLotFormContainer';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -180,6 +180,14 @@ export default class ParkingLotManagementPage extends Component {
         key: 'availablePositionCount',
       },
       {
+        title: 'Current Status',
+        dataIndex: 'status',
+        key: 'status',
+        render: status => (
+          <Tag color="blue">{status}</Tag>
+        ),
+      },
+      {
         title: 'Operation',
         dataIndex: 'operation',
         render: (text, record) => {
@@ -189,7 +197,6 @@ export default class ParkingLotManagementPage extends Component {
                 ParkingLotsResource.closeLot(record.id)
                   .then(result => {
                     if (result.status === 200) {
-                      // alert("Closed");
                       this.createNotification({
                         "type": "success",
                         "title": "Closed",
@@ -205,7 +212,7 @@ export default class ParkingLotManagementPage extends Component {
                     }
                   })
               }}>
-              <a href="javascript:;">Close</a>
+              <a href="javascript:;">Close the lot</a>
             </Popconfirm>
             :
             <Popconfirm title="Confirm to open?" onConfirm={() => {
@@ -227,7 +234,7 @@ export default class ParkingLotManagementPage extends Component {
                   }
                 })
             }}>
-            <a href="javascript:;">Open</a>
+            <a href="javascript:;">Open the lot</a>
           </Popconfirm>
         )},
       }
