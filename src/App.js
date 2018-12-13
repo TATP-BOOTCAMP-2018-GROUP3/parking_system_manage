@@ -3,11 +3,11 @@ import './App.css';
 import { Layout, Menu, Icon } from 'antd';
 import { Route, Link, Switch } from "react-router-dom"
 import EmployeeManagementContainer from "./containers/EmployeeManagementContainer"
-import OrderManagement from "./component/OrderManagement"
 import ParkingLotDashboardContainer from './containers/ParkingLotDashboardContainer';
 import ParkingLotManagementContainer from './containers/ParkingLotManagementContainer';
 import AssignParkingLotContainer from './containers/AssignParkingLotContainer';
 import Welcome from './component/WelcomePage';
+import OrderManagementContainer from './containers/OrderManagementContainer';
 
 const { Header, Sider, Content } = Layout;
 
@@ -86,7 +86,7 @@ class App extends Component {
               <Route path="/ParkingLotManagementPage" component={ParkingLotManagementContainer}></Route>
               <Route path="/AssignParkingLotPage" component={AssignParkingLotContainer}></Route>
               <Route path="/ParkingLotDashboard" component={ParkingLotDashboardContainer}></Route>
-              <Route path="/OrderManagement" component={OrderManagement}></Route>
+              <Route path="/OrderManagement" component={OrderManagementContainer}></Route>
               <Route path="/Welcome" component={Welcome}/>
               <Route component={Welcome}/>
             </Switch>
