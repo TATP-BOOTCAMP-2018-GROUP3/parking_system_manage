@@ -157,10 +157,9 @@ export default class ParkingLotManagementPage extends Component {
         key: 'availablePositionCount',
       },
       {
-        title: 'operation',
+        title: 'Operation',
         dataIndex: 'operation',
         render: (text, record) => {
-          console.log(record)
           return (
             (record.status === 'open') ?  
           <Popconfirm title="Confirm to close?" onConfirm={() => {
