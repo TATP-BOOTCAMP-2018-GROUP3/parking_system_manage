@@ -1,4 +1,4 @@
-const hostname = "https://parking-system-backend.herokuapp.com";
+const hostname = "https://parking-system-backend-prod.herokuapp.com";
 const resourceName = "/auth";
 
 export default {
