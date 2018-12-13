@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
     employees: state.employees,
-    onShowEmployeeForm: state.onShowEmployeeForm
+    onShowEmployeeForm: state.onShowEmployeeForm,
+    onShowPasswordModel: state.onShowPasswordModel,
+    employeePassword: state.employeePassword
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -13,9 +15,20 @@ const mapDispatchToProps = dispatch => ({
             payload: employees
         });
     },
-    toggleOnShowForm: () => {
+    toggleOnShowEmployeeForm: () => {
         dispatch({
             type: "TOGGLE_ON_SHOW_EMPLOYEE_FORM"
+        });
+    },
+    returnPasswordAfterCreate: employeePassword => {
+        dispatch({
+            type: 'GET_PASSWORD_AFTER_CREATE_ACCOUNT',
+            payload: employeePassword
+        })
+    },
+    toggleOnShowPasswordModel: () => {
+        dispatch({
+            type: "TOGGLE_ON_SHOW_PASSWORD_MODEL"
         });
     }
 });

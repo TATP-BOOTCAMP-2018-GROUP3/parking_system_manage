@@ -30,7 +30,6 @@ class EmployeeForm extends Component {
   };
 
   refresh = () => {
-    console.log("Enter")
     EmployeeResource.getAll()
     .then(result => result.json())
     .then(result => {
@@ -44,9 +43,9 @@ class EmployeeForm extends Component {
           if (!err) { 
             this.props.onClickCreate(values.account_name, values.email, values.phoneNumb)
             .then(result =>{
-              console.log(result)
-              if(result.status === 201){
+              if(result != null){
                 this.responseMessage('Employee created successfully.', 'info')
+                this.props.showPasswordModel()
                 this.refresh()
               }else {         
               this.responseMessage('Employee account already exist. Create failed.', 'error')
@@ -61,7 +60,6 @@ class EmployeeForm extends Component {
     const {getFieldDecorator} = this.props.form;
 
     return (
-    
         <Form onSubmit={this.handleSubmit}>
         Add Employee
         

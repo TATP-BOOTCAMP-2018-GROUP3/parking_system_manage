@@ -1,8 +1,10 @@
 const initialState = {
     parkingLots: [],
     employees: [],
+    employeePassword: '',
     onShowEmployeeForm: false,
     onShowParkingLotForm: false,
+    onShowPasswordModel: false,
     parkingOrders: [],
     parkingClerks: [],
 };
@@ -23,7 +25,6 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 employees: payload
-
                 }
         case "GET_ALL_PARKING_ORDER":
             return {
@@ -44,6 +45,16 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 onShowEmployeeForm: !state.onShowEmployeeForm
+            }
+        case "GET_PASSWORD_AFTER_CREATE_ACCOUNT":
+            return {
+                ...state,
+                employeePassword: payload
+            }
+        case "TOGGLE_ON_SHOW_PASSWORD_MODEL":
+            return {
+                ...state,
+                onShowPasswordModel: !state.onShowPasswordModel
             }
         default:
             return state;
