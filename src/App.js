@@ -39,7 +39,7 @@ class App extends Component {
           collapsed={this.state.collapsed}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          <Menu theme="dark" mode="inline">
             {localStorage.getItem('ROLE') === "ADMIN" ? (
               <Menu.Item key="1">
               <Icon type="team" />
