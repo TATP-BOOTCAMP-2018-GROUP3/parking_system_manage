@@ -39,27 +39,27 @@ class App extends Component {
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <Icon type="user" />
+              <Icon type="team" />
               <span>Empolyees</span>
               <Link to="/EmployeeManagementPage">EmployeeManagementPage</Link>
             </Menu.Item>   
             <Menu.Item key="2">
-              <Icon type="video-camera" />
+              <Icon type="car" />
               <span>Parking Lots</span>
               <Link to="/ParkingLotManagementPage">ParkingLotManagementPage</Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="upload" />
+              <Icon type="user" />
               <span>Assign Parking Lot</span>
               <Link to="/AssignParkingLotPage">AssignParkingLotPage</Link>
             </Menu.Item>
             <Menu.Item key="4">
-              <Icon type="video-camera" />
+              <Icon type="dashboard" />
               <span>Parking Dashboard</span>
               <Link to="/ParkingLotDashboard">ParkingLotDashboard</Link>
             </Menu.Item>
             <Menu.Item key="5">
-              <Icon type="video-camera" />
+              <Icon type="ordered-list" />
               <span>Order Management</span>
               <Link to="/OrderManagement">OrderManagement</Link>
             </Menu.Item>
