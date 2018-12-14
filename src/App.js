@@ -77,7 +77,7 @@ class App extends Component {
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="dashboard" />
-              <span>Parking Dashboard</span>
+              <span>Dashboard</span>
               <Link to="/ParkingLotDashboard">ParkingLotDashboard</Link>
             </Menu.Item>
             <Menu.Item key="5">
