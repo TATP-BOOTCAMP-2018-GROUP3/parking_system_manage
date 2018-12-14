@@ -278,7 +278,7 @@ export default class OrderManagementPage extends Component {
       }
     })
     this.setState({
-      orders: tempOrder.filter((order) => (order.searchString.indexOf(value) !== -1)),
+      orders: tempOrder.filter((order) => (order.searchString.toUpperCase().indexOf(value.toUpperCase()) !== -1)),
       searching: true
     },
     )
